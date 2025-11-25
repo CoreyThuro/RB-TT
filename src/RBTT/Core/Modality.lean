@@ -1,7 +1,7 @@
-import RBHOTT.Res
-import RBHOTT.Infra.Cost
+import RBTT.Res
+import RBTT.Infra.Cost
 
-namespace RBHOTT
+namespace RBTT
 
 /-!
 # Feasibility Modality as Graded Comonad
@@ -163,4 +163,4 @@ theorem box_add_val (ba : Box R₁ A) (bb : Box R₂ B) :
 
 end Box
 
-end RBHOTT
+end RBTT

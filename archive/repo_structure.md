@@ -1,7 +1,7 @@
-# Complete RB-HOTT Repository Structure
+# Complete RB-TT Repository Structure
 
 ```
-rb-uf-hott/
+rb-uf-tt/
 │
 ├── README.md                           # Main project documentation
 ├── LICENSE                             # MIT License
@@ -12,7 +12,7 @@ rb-uf-hott/
 ├── lakefile.lean                      # Lean project configuration
 │
 ├── paper/                             # Academic paper
-│   ├── rb-uf-hott.tex                # Main LaTeX source
+│   ├── rb-uf-tt.tex                # Main LaTeX source
 │   ├── references.bib                 # Bibliography
 │   ├── figures/                       # Paper figures and diagrams
 │   │   ├── resource-contexts.pdf
@@ -24,7 +24,7 @@ rb-uf-hott/
 │   └── Makefile                      # LaTeX build automation
 │
 ├── src/                              # Main Lean 4 source code
-│   ├── RBHOTT/                    # Core library
+│   ├── RBTT/                    # Core library
 │   │   ├── Basic.lean               # Basic definitions and imports
 │   │   ├── ResourceContext.lean     # Resource context definitions
 │   │   ├── FeasibleNumbers.lean     # Resource-bounded arithmetic
@@ -160,11 +160,11 @@ Thumbs.db
 
 ### 2. CONTRIBUTING.md
 ```markdown
-# Contributing to RB-HOTT
+# Contributing to RB-TT
 
 ## Development Setup
 1. Install Lean 4 (version 4.3.0 or later)
-2. Clone the repository: `git clone https://github.com/username/rb-uf-hott.git`
+2. Clone the repository: `git clone https://github.com/username/rb-uf-tt.git`
 3. Build the project: `lake build`
 4. Run tests: `lake test`
 
@@ -197,7 +197,7 @@ ipywidgets>=7.6.0
 from setuptools import setup, find_packages
 
 setup(
-    name="rb-uf-hott",
+    name="rb-uf-tt",
     version="0.1.0",
     description="Resource-Bounded Ultrafinitist Homotopy Type Theory",
     packages=find_packages(),

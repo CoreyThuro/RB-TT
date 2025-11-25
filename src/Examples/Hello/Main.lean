@@ -1,5 +1,5 @@
-import RBHOTT.Core
-open RBHOTT
+import RBTT.Core
+open RBTT
 
 def main : IO Unit := do
   let R : ResCtx := { time := 10, memory := 2048, depth := 3 }

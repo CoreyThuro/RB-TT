@@ -14,7 +14,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\thepage}
-\lhead{Resource-Bounded Ultrafinitist HoTT}
+\lhead{Resource-Bounded Ultrafinitist TT}
 
 % Theorem environments
 \newtheorem{theorem}{Theorem}[section]
@@ -53,7 +53,7 @@ A Parameterized Foundation for Mathematics}
 \maketitle
 
 \begin{abstract}
-We present Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT), a novel foundational framework that addresses the fundamental insight of Alexander Esenin-Volpin's ultrafinitism: all mathematical reasoning occurs within resource constraints. Rather than seeking absolute bounds on feasible mathematics, RB-HOTT parameterizes type theory by resource contexts $R$, creating a family of type theories $\text{RB-HOTT}[R]$ where mathematical objects and proofs exist relative to available computational resources. This approach formalizes Volpin's intuition about the ``fading reality'' of large numbers while providing a rigorous foundation for resource-aware computation and homotopy theory. We provide both theoretical foundations and a concrete implementation in Lean 4.
+We present Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT), a novel foundational framework that addresses the fundamental insight of Alexander Esenin-Volpin's ultrafinitism: all mathematical reasoning occurs within resource constraints. Rather than seeking absolute bounds on feasible mathematics, RB-TT parameterizes type theory by resource contexts $R$, creating a family of type theories $\text{RB-TT}[R]$ where mathematical objects and proofs exist relative to available computational resources. This approach formalizes Volpin's intuition about the ``fading reality'' of large numbers while providing a rigorous foundation for resource-aware computation and homotopy theory. We provide both theoretical foundations and a concrete implementation in Lean 4.
 \end{abstract}
 
 \section{Introduction}
@@ -62,7 +62,7 @@ The foundational crisis of mathematics has long centered on the tension between 
 
 Previous attempts to formalize ultrafinitism have either been dismissed as lacking rigor or have imposed arbitrary absolute bounds that miss the essential insight. We argue that the fundamental error has been seeking a single, universal notion of ``feasibility.'' Instead, we propose that feasibility is always \textit{resource-relative}—what counts as a meaningful mathematical object depends entirely on the available computational resources.
 
-This leads us to Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT), a family of type theories parameterized by resource contexts $R$. Each member $\text{RB-HOTT}[R]$ provides a complete foundational system suitable for mathematics within its resource bounds, while resource transfer functions allow communication between different systems.
+This leads us to Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT), a family of type theories parameterized by resource contexts $R$. Each member $\text{RB-TT}[R]$ provides a complete foundational system suitable for mathematics within its resource bounds, while resource transfer functions allow communication between different systems.
 
 \section{Philosophical Foundations}
 
@@ -120,7 +120,7 @@ Different resource contexts yield genuinely different number systems:
 
 \subsection{Resource-Bounded Judgments}
 
-The fundamental judgment form in $\text{RB-HOTT}[R]$ is:
+The fundamental judgment form in $\text{RB-TT}[R]$ is:
 $$\Gamma \vdash_{R,r} t : A$$
 
 This reads: ``In context $\Gamma$, given total resources $R$ and having consumed resources $r$, term $t$ has type $A$.''
@@ -186,7 +186,7 @@ This formalizes Volpin's distinction between local transitivity and global closu
 
 \subsection{Resource-Bounded Homotopy Types}
 
-In $\text{RB-HOTT}[R]$, types are interpreted as finite presentations of homotopy types, where all homotopical structure is bounded by available resources:
+In $\text{RB-TT}[R]$, types are interpreted as finite presentations of homotopy types, where all homotopical structure is bounded by available resources:
 
 \begin{itemize}
 \item \textbf{Points} $a:A$ are terms constructible within $R$
@@ -226,7 +226,7 @@ Functions $f : \text{Circle}[R] \to B$ must satisfy resource bounds when applied
 
 \section{Implementation}
 
-We provide a concrete implementation of RB-HOTT in Lean 4. The core definitions include:
+We provide a concrete implementation of RB-TT in Lean 4. The core definitions include:
 
 \begin{lstlisting}[style=lean]
 -- Resource Context Definition
@@ -265,7 +265,7 @@ The complete implementation includes resource transfer functions, consistency ra
 
 \subsection{Metamathematical Applications}
 
-RB-HOTT provides a framework for studying \textit{consistency radii}—the resource bounds under which apparently contradictory theories become consistent.
+RB-TT provides a framework for studying \textit{consistency radii}—the resource bounds under which apparently contradictory theories become consistent.
 
 \begin{theorem}[Consistency Radius]
 Let $\text{GRAHAM}(g_{64})$ be Peano Arithmetic plus the axiom $\forall n, n < g_{64}$. Then:
@@ -275,7 +275,7 @@ where $\log^*$ is the iterated logarithm.
 
 \subsection{Computational Applications}
 
-Programs in RB-HOTT come with:
+Programs in RB-TT come with:
 \begin{itemize}
 \item Correctness proofs
 \item Absolute resource bounds (not asymptotic)
@@ -308,17 +308,17 @@ Can we empirically measure the actual resource bounds of human mathematicians? H
 
 \section{Conclusion}
 
-Resource-Bounded Ultrafinitist Homotopy Type Theory represents a fundamental reconceptualization of mathematics itself. Rather than viewing resource constraints as limitations to overcome, RB-HOTT treats them as constitutive of mathematical meaning.
+Resource-Bounded Ultrafinitist Homotopy Type Theory represents a fundamental reconceptualization of mathematics itself. Rather than viewing resource constraints as limitations to overcome, RB-TT treats them as constitutive of mathematical meaning.
 
 This approach suggests that the traditional question ``What is mathematics?'' should be replaced with ``What is mathematics for agents with resource bounds $R$?'' This shift from absolute to relative foundations makes explicit what has always been true: all mathematics is done by finite agents with finite resources.
 
-By working systematically within constraints rather than attempting to transcend them, RB-HOTT provides a foundation for mathematics that is simultaneously more humble about its limitations and more confident about its achievements within those limitations.
+By working systematically within constraints rather than attempting to transcend them, RB-TT provides a foundation for mathematics that is simultaneously more humble about its limitations and more confident about its achievements within those limitations.
 
 \section*{Code Repository}
 
 The complete implementation, examples, and documentation are available at:
 \begin{center}
-\texttt{https://github.com/username/rb-uf-hott}
+\texttt{https://github.com/username/rb-uf-tt}
 \end{center}
 
 The repository includes:

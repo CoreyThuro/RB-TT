@@ -1,9 +1,9 @@
-# RB-HOTT: Resource-Bounded Ultrafinitist HoTT (workable skeleton)
+# RB-TT: Resource-Bounded Ultrafinitist TT (workable skeleton)
 
 This repository is a *compiling-ready* skeleton for a graded/resource-aware foundation.
 It contains:
-- Lean 4 library `RBHOTT` with minimal `ResCtx` and `FeasibleNat`.
-- Executable `rbhott` printing a tiny demo.
+- Lean 4 library `RBTT` with minimal `ResCtx` and `FeasibleNat`.
+- Executable `rbtt` printing a tiny demo.
 - `archive/` holds your original drafts one level deep, untouched.
 
 ## Build (Lean 4)
@@ -11,7 +11,7 @@ It contains:
 2. In this folder:
    ```
    lake build
-   lake exe rbhott
+   lake exe rbtt
    ```
 ## Python mock demo
    ```

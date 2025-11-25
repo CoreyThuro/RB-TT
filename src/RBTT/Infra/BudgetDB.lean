@@ -1,8 +1,8 @@
 import Lean
-import RBHOTT.Res
-import RBHOTT.Infra.Cost
+import RBTT.Res
+import RBTT.Infra.Cost
 
-namespace RBHOTT.Infra
+namespace RBTT.Infra
 
 open Lean
 
@@ -303,4 +303,4 @@ This enables automated detection of performance regressions in proofs,
 maintaining resource bounds over time.
 -/
 
-end RBHOTT.Infra
+end RBTT.Infra

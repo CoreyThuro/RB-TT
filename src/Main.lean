@@ -1,9 +1,9 @@
-import RBHOTT.Core
-open RBHOTT
+import RBTT.Core
+open RBTT
 
-/-- Simple demonstration of RB-HoTT resource-bounded computation -/
+/-- Simple demonstration of RB-TT resource-bounded computation -/
 def main : IO Unit := do
-  IO.println "RB-HoTT: Resource-Bounded Homotopy Type Theory"
+  IO.println "RB-TT: Resource-Bounded Homotopy Type Theory"
   IO.println "==============================================="
   IO.println ""
 

@@ -1,4 +1,4 @@
-namespace RBHOTT
+namespace RBTT
 
 /-- A minimal resource context with simple, additive budgets. -/
 structure ResCtx where
@@ -118,4 +118,4 @@ theorem zero_add (A : ResCtx) : ResCtx.add ResCtx.zero A = A := by
   unfold ResCtx.add ResCtx.zero
   simp only [Nat.zero_add, Nat.zero_max]
 
-end RBHOTT
+end RBTT

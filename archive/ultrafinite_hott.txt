@@ -1,4 +1,4 @@
--- Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT[R])
+-- Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT[R])
 -- A parameterized foundation for mathematics under resource constraints
 
 -- Resource Context: the fundamental parameter of our type theory

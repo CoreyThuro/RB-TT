@@ -1,16 +1,16 @@
-# Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT)
+# Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT)
 ## Complete Installation Guide and Repository Structure
 
 ### Repository Overview
 
-Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT) is a novel foundational framework that parameterizes mathematics by resource contexts, making explicit the resource constraints that are implicit in all mathematical reasoning.
+Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT) is a novel foundational framework that parameterizes mathematics by resource contexts, making explicit the resource constraints that are implicit in all mathematical reasoning.
 
 ---
 
 ## Complete File Structure
 
 ```
-rb-uf-hott/
+rb-uf-tt/
 │
 ├── README.md                           # Main project documentation
 ├── LICENSE                             # MIT License
@@ -23,7 +23,7 @@ rb-uf-hott/
 ├── requirements.txt                   # Python dependencies
 │
 ├── paper/                             # Academic Paper
-│   ├── rb-uf-hott.tex                # Main LaTeX source
+│   ├── rb-uf-tt.tex                # Main LaTeX source
 │   ├── references.bib                 # Bibliography
 │   ├── Makefile                      # LaTeX build automation
 │   ├── figures/                       # Paper figures and diagrams
@@ -37,7 +37,7 @@ rb-uf-hott/
 │
 ├── src/                              # Main Lean 4 Source Code
 │   ├── Main.lean                     # Entry point and demonstrations
-│   └── RBHOTT/                    # Core library
+│   └── RBTT/                    # Core library
 │       ├── Basic.lean               # Basic definitions and imports
 │       ├── ResourceContext.lean     # Resource context definitions
 │       ├── FeasibleNumbers.lean     # Resource-bounded arithmetic
@@ -196,8 +196,8 @@ pip3 install jupyter
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/rb-uf-hott.git
-cd rb-uf-hott
+git clone https://github.com/username/rb-uf-tt.git
+cd rb-uf-tt
 ```
 
 ### Step 2: Create Directory Structure
@@ -205,7 +205,7 @@ cd rb-uf-hott
 ```bash
 # Create all necessary directories
 mkdir -p paper/figures paper/supplementary
-mkdir -p src/RBHOTT
+mkdir -p src/RBTT
 mkdir -p examples test docs/{tutorial,theory,api,examples}
 mkdir -p notebooks benchmarks tools scripts
 mkdir -p .github/{workflows,ISSUE_TEMPLATE}
@@ -226,15 +226,15 @@ Create the `lakefile.lean`:
 import Lake
 open Lake DSL
 
-package «rb-uf-hott» where
+package «rb-uf-tt» where
   version := v!"0.1.0"
   keywords := #["foundations", "type-theory", "ultrafinitism", "homotopy-type-theory"]
   description := "Resource-Bounded Ultrafinitist Homotopy Type Theory"
 
-lean_lib «RBHOTT» where
+lean_lib «RBTT» where
 
 @[default_target]
-lean_exe «rb-uf-hott» where
+lean_exe «rb-uf-tt» where
   root := `Main
   supportInterpreter := true
 
@@ -267,7 +267,7 @@ pip install -r requirements.txt
 ### Step 7: Install Python Package
 
 ```bash
-# Install the RB-HOTT Python package in development mode
+# Install the RB-TT Python package in development mode
 pip install -e .
 ```
 
@@ -278,7 +278,7 @@ pip install -e .
 lake build
 
 # Test Lean execution
-lake exe rb-uf-hott
+lake exe rb-uf-tt
 
 # Test Python interface
 python3 -c "from tools.python_lean_interface import create_interface; print('Python interface working!')"
@@ -296,10 +296,10 @@ jupyter notebook --version
 ```bash
 # Build and run the main program
 lake build
-lake exe rb-uf-hott
+lake exe rb-uf-tt
 
 # Run specific examples
-lean src/RBHOTT/Examples.lean
+lean src/RBTT/Examples.lean
 
 # Interactive Lean session
 lean --run src/Main.lean
@@ -347,7 +347,7 @@ make
 ### 1. Basic Resource Context Usage
 
 ```lean
-import RBHOTT.ResourceContext
+import RBTT.ResourceContext
 
 def my_context : ResourceContext := {
   time_bound := 1000,
@@ -363,7 +363,7 @@ def my_context : ResourceContext := {
 ### 2. Feasible Arithmetic
 
 ```lean
-import RBHOTT.FeasibleNumbers
+import RBTT.FeasibleNumbers
 
 def student_context : ResourceContext := R_student
 
@@ -422,7 +422,7 @@ lake update
 #### 4. Jupyter Notebook Issues
 ```bash
 # Install Jupyter kernel
-python -m ipykernel install --user --name rb-uf-hott
+python -m ipykernel install --user --name rb-uf-tt
 jupyter notebook notebooks/exploration.ipynb
 ```
 
@@ -472,7 +472,7 @@ chmod +x scripts/*.sh
 1. Create new file in `examples/`
 2. Add tests in `test/`
 3. Update documentation
-4. Add to `src/RBHOTT/Examples.lean` if appropriate
+4. Add to `src/RBTT/Examples.lean` if appropriate
 
 ### Adding Python Features
 
@@ -561,11 +561,11 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 If you use this work in academic research, please cite:
 
 ```bibtex
-@software{rb-uf-hott-2024,
+@software{rb-uf-tt-2024,
   title={Resource-Bounded Ultrafinitist Homotopy Type Theory: A Parameterized Foundation for Mathematics},
   author={Anonymous},
   year={2024},
-  url={https://github.com/username/rb-uf-hott},
+  url={https://github.com/username/rb-uf-tt},
   version={0.1.0}
 }
 ```

@@ -1,6 +1,6 @@
-import RBHOTT.Core.STLC
+import RBTT.Core.STLC
 
-namespace RBHOTT
+namespace RBTT
 
 /-!
 # Operational Semantics and Cost Model
@@ -127,7 +127,7 @@ axiom preservation {A : Ty} {R : ResCtx} {b b' : Nat} {t t' : Tm [] A} :
 If a closed term has synthesized bound `b` in resource context `R`,
 then it reduces to a value in at most `b` steps, and `b ≤ Time(R)`.
 
-This is the **central theorem** of RB-HoTT's STLC fragment.
+This is the **central theorem** of RB-TT's STLC fragment.
 
 TODO: Prove this by induction on typing derivation using progress + preservation.
 For now we admit it with `sorry` to establish the infrastructure.
@@ -168,4 +168,4 @@ example :
 
 end Examples
 
-end RBHOTT
+end RBTT

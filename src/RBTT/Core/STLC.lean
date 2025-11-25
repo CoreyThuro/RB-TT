@@ -1,6 +1,6 @@
-import RBHOTT.Res
+import RBTT.Res
 
-namespace RBHOTT
+namespace RBTT
 
 /-!
 # Simply-Typed Lambda Calculus with Resource Bounds
@@ -210,4 +210,4 @@ example : [] ⊢[R;1] cond_example : .nat :=
 
 end Examples
 
-end RBHOTT
+end RBTT

@@ -1,15 +1,15 @@
 import Lean
-import RBHOTT.Res
-import RBHOTT.Infra.BudgetDB
+import RBTT.Res
+import RBTT.Infra.BudgetDB
 
-namespace RBHOTT.Infra
+namespace RBTT.Infra
 
 open Lean
 
 /-!
 # Budget Baseline Records
 
-**Purpose**: Persistent budget baselines for tracked proofs in RB-HoTT.
+**Purpose**: Persistent budget baselines for tracked proofs in RB-TT.
 
 This module provides the baseline budgets established from `#rb_cost` measurements
 in `Examples/Lists.lean`. These baselines serve as the source of truth for CI
@@ -35,10 +35,10 @@ From BudgetDB.lean's `recordBudgetFromCost`:
 
 ```lean
 -- In CheckBudgets.lean or CI scripts:
-import RBHOTT.Infra.BudgetRecords
+import RBTT.Infra.BudgetRecords
 
 def validateListLength : BudgetCheckResult :=
-  checkBudget env `RBHOTT.Examples.list_length
+  checkBudget env `RBTT.Examples.list_length
     { time := 7, memory := 56, depth := 4 }
 
 -- Compare measured cost against list_length_baseline
@@ -110,11 +110,11 @@ def list_reverse_baseline : ResCtx :=
     Each entry maps a fully qualified proof name to its baseline budget.
 -/
 def baselineRegistry : List (Name × ResCtx) := [
-  (`RBHOTT.Examples.list_length, list_length_baseline),
-  (`RBHOTT.Examples.list_append, list_append_baseline),
-  (`RBHOTT.Examples.list_map, list_map_baseline),
-  (`RBHOTT.Examples.list_filter, list_filter_baseline),
-  (`RBHOTT.Examples.list_reverse, list_reverse_baseline)
+  (`RBTT.Examples.list_length, list_length_baseline),
+  (`RBTT.Examples.list_append, list_append_baseline),
+  (`RBTT.Examples.list_map, list_map_baseline),
+  (`RBTT.Examples.list_filter, list_filter_baseline),
+  (`RBTT.Examples.list_reverse, list_reverse_baseline)
 ]
 
 /-- Lookup a baseline budget by proof name.
@@ -158,26 +158,26 @@ def batchValidate (measurements : List (Name × ResCtx)) : List BudgetCheckResul
 /-- Example: Validate list_length against its baseline. -/
 example : BudgetCheckResult :=
   let measured : ResCtx := { time := 7, memory := 56, depth := 4 }
-  validateAgainstBaseline `RBHOTT.Examples.list_length measured
+  validateAgainstBaseline `RBTT.Examples.list_length measured
   -- Result: .withinBudget (exact match)
 
 /-- Example: Detect regression in list_append. -/
 example : BudgetCheckResult :=
   let measured : ResCtx := { time := 35, memory := 280, depth := 11 }
-  validateAgainstBaseline `RBHOTT.Examples.list_append measured
+  validateAgainstBaseline `RBTT.Examples.list_append measured
   -- Result: .overBudget (exceeds baseline)
 
 /-- Example: Handle missing baseline. -/
 example : BudgetCheckResult :=
   let measured : ResCtx := { time := 10, memory := 80, depth := 5 }
-  validateAgainstBaseline `RBHOTT.Examples.unknown_proof measured
+  validateAgainstBaseline `RBTT.Examples.unknown_proof measured
   -- Result: .noBudgetStored
 
 /-! ## Integration Notes
 
 **For CheckBudgets.lean**:
 ```lean
-import RBHOTT.Infra.BudgetRecords
+import RBTT.Infra.BudgetRecords
 
 def main (args : List String) : IO UInt32 := do
   -- Measure current costs (requires environment access)
@@ -198,11 +198,11 @@ def main (args : List String) : IO UInt32 := do
 #eval trackedProofs
 -- Output: List of all tracked proof names
 
-#eval getBaseline `RBHOTT.Examples.list_length
+#eval getBaseline `RBTT.Examples.list_length
 -- Output: some { time := 7, memory := 56, depth := 4 }
 ```
 
 This provides a clean, maintainable, and auditable budget baseline system.
 -/
 
-end RBHOTT.Infra
+end RBTT.Infra

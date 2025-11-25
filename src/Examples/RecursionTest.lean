@@ -1,6 +1,6 @@
-import RBHOTT.Core
+import RBTT.Core
 
-namespace RBHOTT.Examples
+namespace RBTT.Examples
 
 /-!
 # Recursion Tests
@@ -15,7 +15,7 @@ Tests for Core/Recursion.lean covering:
 These tests demonstrate that recursion implementation meets PR2 requirements.
 -/
 
-open RBHOTT
+open RBTT
 
 section FuelBasedRecursion
 
@@ -227,4 +227,4 @@ end PaperExamples
 Total: 28 comprehensive tests covering all aspects of PR2 recursion implementation
 -/
 
-end RBHOTT.Examples
+end RBTT.Examples

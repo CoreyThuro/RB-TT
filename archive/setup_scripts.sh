@@ -1,11 +1,11 @@
 #!/bin/bash
 # scripts/setup.sh - Complete repository setup
 
-echo "Setting up RB-UF-HoTT Repository..."
+echo "Setting up RB-UF-TT Repository..."
 
 # Create directory structure
 mkdir -p paper/figures paper/supplementary
-mkdir -p src/RBUFHoTT
+mkdir -p src/RBUFTT
 mkdir -p examples test docs/{tutorial,theory,api,examples}
 mkdir -p notebooks benchmarks tools scripts .github/{workflows,ISSUE_TEMPLATE}
 mkdir -p config
@@ -72,7 +72,7 @@ cat > setup.py << 'EOF'
 from setuptools import setup, find_packages
 
 setup(
-    name="rb-uf-hott",
+    name="rb-uf-tt",
     version="0.1.0",
     description="Resource-Bounded Ultrafinitist Homotopy Type Theory",
     long_description=open("README.md").read(),
@@ -100,11 +100,11 @@ EOF
 
 # Create CONTRIBUTING.md
 cat > CONTRIBUTING.md << 'EOF'
-# Contributing to RB-UF-HoTT
+# Contributing to RB-UF-TT
 
 ## Development Setup
 1. Install Lean 4 (version 4.3.0 or later)
-2. Clone the repository: `git clone https://github.com/username/rb-uf-hott.git`
+2. Clone the repository: `git clone https://github.com/username/rb-uf-tt.git`
 3. Build the project: `lake build`
 4. Install Python dependencies: `pip install -r requirements.txt`
 5. Run tests: `lake test`
@@ -146,7 +146,7 @@ EOF
 cat > LICENSE << 'EOF'
 MIT License
 
-Copyright (c) 2024 RB-UF-HoTT Contributors
+Copyright (c) 2024 RB-UF-TT Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -170,9 +170,9 @@ EOF
 # Create build script
 cat > scripts/build.sh << 'EOF'
 #!/bin/bash
-# Build script for RB-UF-HoTT
+# Build script for RB-UF-TT
 
-echo "Building RB-UF-HoTT..."
+echo "Building RB-UF-TT..."
 
 # Build Lean project
 echo "Building Lean project..."
@@ -199,9 +199,9 @@ chmod +x scripts/build.sh
 # Create test script
 cat > scripts/test.sh << 'EOF'
 #!/bin/bash
-# Test script for RB-UF-HoTT
+# Test script for RB-UF-TT
 
-echo "Running RB-UF-HoTT tests..."
+echo "Running RB-UF-TT tests..."
 
 # Run Lean tests
 echo "Running Lean tests..."
@@ -225,7 +225,7 @@ chmod +x scripts/test.sh
 
 # Create quick start guide
 cat > docs/tutorial/getting-started.md << 'EOF'
-# Getting Started with RB-UF-HoTT
+# Getting Started with RB-UF-TT
 
 ## Installation
 
@@ -236,8 +236,8 @@ cat > docs/tutorial/getting-started.md << 'EOF'
 
 2. **Clone the repository**:
    ```bash
-   git clone https://github.com/username/rb-uf-hott.git
-   cd rb-uf-hott
+   git clone https://github.com/username/rb-uf-tt.git
+   cd rb-uf-tt
    ```
 
 3. **Build the project**:
@@ -250,7 +250,7 @@ cat > docs/tutorial/getting-started.md << 'EOF'
 ### Using Lean directly:
 ```bash
 lake build
-lake exe rb-uf-hott
+lake exe rb-uf-tt
 ```
 
 ### Using Python interface:

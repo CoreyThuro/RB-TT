@@ -1,8 +1,8 @@
-import RBHOTT.Core
+import RBTT.Core
 
-namespace RBHOTT.Examples
+namespace RBTT.Examples
 
-open RBHOTT Box
+open RBTT Box
 
 /-!
 # Resource-Bounded List Operations
@@ -36,7 +36,7 @@ def list_length (xs : List α) (R : ResCtx) (h : xs.length ≤ R.time) : Box R N
 
 -/
 
-open RBHOTT
+open RBTT
 
 /-! ## Basic List Operations with Cost Bounds -/
 
@@ -61,7 +61,7 @@ noncomputable def list_length_boxed {α : Type} (xs : List α) (R : ResCtx)
   box_intro (list_length xs) xs.length h
 
 -- Measure the actual proof cost
-#rb_cost RBHOTT.Examples.list_length
+#rb_cost RBTT.Examples.list_length
 
 
 /-- **List Append**: O(n+m) operation with additive cost.
@@ -81,7 +81,7 @@ noncomputable def list_append_boxed {α : Type} (xs ys : List α) (R : ResCtx)
     (h : (xs.length + ys.length) ≤ R.time) : Box R (List α) :=
   box_intro (list_append xs ys) (xs.length + ys.length) h
 
-#rb_cost RBHOTT.Examples.list_append
+#rb_cost RBTT.Examples.list_append
 
 
 /-- **List Map**: O(n) operation applying a function to each element.
@@ -99,7 +99,7 @@ noncomputable def list_map_boxed {α β : Type} (f : α → β) (xs : List α) (
     (h : xs.length ≤ R.time) : Box R (List β) :=
   box_intro (list_map f xs) xs.length h
 
-#rb_cost RBHOTT.Examples.list_map
+#rb_cost RBTT.Examples.list_map
 
 
 /-- **List Filter**: O(n) operation selecting elements matching a predicate.
@@ -115,7 +115,7 @@ noncomputable def list_filter_boxed {α : Type} (p : α → Bool) (xs : List α)
     (h : xs.length ≤ R.time) : Box R (List α) :=
   box_intro (list_filter p xs) xs.length h
 
-#rb_cost RBHOTT.Examples.list_filter
+#rb_cost RBTT.Examples.list_filter
 
 
 /-- **List Reverse**: O(n) operation reversing element order.
@@ -131,7 +131,7 @@ noncomputable def list_reverse_boxed {α : Type} (xs : List α) (R : ResCtx)
     (h : xs.length ≤ R.time) : Box R (List α) :=
   box_intro (list_reverse xs) xs.length h
 
-#rb_cost RBHOTT.Examples.list_reverse
+#rb_cost RBTT.Examples.list_reverse
 
 
 /-! ## Compositional Cost Examples -/
@@ -242,4 +242,4 @@ noncomputable def compositional_example (xs ys : List Nat)
   list_append_boxed xs ys R h_total
 
 
-end RBHOTT.Examples
+end RBTT.Examples

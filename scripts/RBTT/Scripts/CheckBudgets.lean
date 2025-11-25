@@ -1,13 +1,13 @@
 import Lean
-import RBHOTT.Infra.Cost
-import RBHOTT.Infra.BudgetDB
-import RBHOTT.Infra.BudgetRecords
-import RBHOTT.Examples.Lists
+import RBTT.Infra.Cost
+import RBTT.Infra.BudgetDB
+import RBTT.Infra.BudgetRecords
+import RBTT.Examples.Lists
 
 /-!
 # Budget Regression Checker
 
-This executable implements the CI budget gate for RB-HoTT as specified in:
+This executable implements the CI budget gate for RB-TT as specified in:
 - Action list line 49: "lake exe check-budgets; fail on regressions"
 - Paper §6 (lines 218-231): CI automation template
 
@@ -52,9 +52,9 @@ from `Infra/BudgetRecords.lean`.
 -/
 
 open Lean
-open RBHOTT.Infra
+open RBTT.Infra
 
-namespace RBHOTT.Scripts.CheckBudgets
+namespace RBTT.Scripts.CheckBudgets
 
 /-! ## Simulated Measurements -/
 
@@ -69,21 +69,21 @@ namespace RBHOTT.Scripts.CheckBudgets
 -/
 def simulateMeasurements (testRegression : Bool) : List (Name × ResCtx) :=
   let base := [
-    (`RBHOTT.Examples.list_length, { time := 7, memory := 56, depth := 4 : ResCtx }),
-    (`RBHOTT.Examples.list_append, { time := 30, memory := 240, depth := 10 : ResCtx }),
-    (`RBHOTT.Examples.list_map, { time := 13, memory := 104, depth := 8 : ResCtx }),
-    (`RBHOTT.Examples.list_filter, { time := 10, memory := 80, depth := 6 : ResCtx }),
-    (`RBHOTT.Examples.list_reverse, { time := 7, memory := 56, depth := 4 : ResCtx })
+    (`RBTT.Examples.list_length, { time := 7, memory := 56, depth := 4 : ResCtx }),
+    (`RBTT.Examples.list_append, { time := 30, memory := 240, depth := 10 : ResCtx }),
+    (`RBTT.Examples.list_map, { time := 13, memory := 104, depth := 8 : ResCtx }),
+    (`RBTT.Examples.list_filter, { time := 10, memory := 80, depth := 6 : ResCtx }),
+    (`RBTT.Examples.list_reverse, { time := 7, memory := 56, depth := 4 : ResCtx })
   ]
 
   if testRegression then
     -- Simulate list_append regression: increase costs beyond baseline
     [
-      (`RBHOTT.Examples.list_length, { time := 7, memory := 56, depth := 4 : ResCtx }),
-      (`RBHOTT.Examples.list_append, { time := 35, memory := 280, depth := 11 : ResCtx }),  -- REGRESSION!
-      (`RBHOTT.Examples.list_map, { time := 13, memory := 104, depth := 8 : ResCtx }),
-      (`RBHOTT.Examples.list_filter, { time := 10, memory := 80, depth := 6 : ResCtx }),
-      (`RBHOTT.Examples.list_reverse, { time := 7, memory := 56, depth := 4 : ResCtx })
+      (`RBTT.Examples.list_length, { time := 7, memory := 56, depth := 4 : ResCtx }),
+      (`RBTT.Examples.list_append, { time := 35, memory := 280, depth := 11 : ResCtx }),  -- REGRESSION!
+      (`RBTT.Examples.list_map, { time := 13, memory := 104, depth := 8 : ResCtx }),
+      (`RBTT.Examples.list_filter, { time := 10, memory := 80, depth := 6 : ResCtx }),
+      (`RBTT.Examples.list_reverse, { time := 7, memory := 56, depth := 4 : ResCtx })
     ]
   else
     base
@@ -160,7 +160,7 @@ def main (args : List String) : IO UInt32 := do
   let testRegression := args.contains "--test-regression"
 
   -- Print header
-  IO.println "🔍 RB-HoTT Budget Regression Checker"
+  IO.println "🔍 RB-TT Budget Regression Checker"
   IO.println (String.mk (List.replicate 80 '='))
   IO.println ""
 
@@ -192,4 +192,4 @@ def main (args : List String) : IO UInt32 := do
   -- Determine final status
   determineFinalStatus results
 
-end RBHOTT.Scripts.CheckBudgets
+end RBTT.Scripts.CheckBudgets

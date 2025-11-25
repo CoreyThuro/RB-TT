@@ -1,7 +1,7 @@
     import Lean
     open Lean Meta Elab Command
 
-    namespace RBHOTT
+    namespace RBTT
 
     /-- Simple structural "cost" for proof terms.
         This is *kernel-agnostic* but deterministic:
@@ -91,4 +91,4 @@ JSON: {(ProofCost.toJson c).compress}"
       catch e =>
         logError m!"#rb_cost error: {e.toMessageData}"
 
-    end RBHOTT
+    end RBTT

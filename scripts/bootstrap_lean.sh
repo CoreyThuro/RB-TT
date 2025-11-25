@@ -7,4 +7,4 @@ if ! command -v elan >/dev/null 2>&1; then
 fi
 elan default leanprover/lean4:4.8.0
 lake build
-lake exe rbufhott
+lake exe rbuftt

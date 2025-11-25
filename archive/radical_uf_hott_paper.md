@@ -1,8 +1,8 @@
-# Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT): A Parameterized Foundation for Mathematics
+# Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT): A Parameterized Foundation for Mathematics
 
 ## Part I: The Philosophical Imperative: Beyond Absolute Bounds to Resource Relativity
 
-The construction of a new foundational system for mathematics requires not just technical innovation but a radical philosophical reorientation. The proposed framework of Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-HOTT) emerges from Alexander Esenin-Volpin's profound insight: all mathematical reasoning occurs within resource constraints, and pretending otherwise leads to meaningless abstractions divorced from human experience.
+The construction of a new foundational system for mathematics requires not just technical innovation but a radical philosophical reorientation. The proposed framework of Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-TT) emerges from Alexander Esenin-Volpin's profound insight: all mathematical reasoning occurs within resource constraints, and pretending otherwise leads to meaningless abstractions divorced from human experience.
 
 The crucial breakthrough is recognizing that there is no universal, absolute notion of "feasibility." Instead, feasibility is always relative to available resources—time, memory, cognitive capacity, computational tools, collaborative networks. Mathematics is not about transcending these limitations through infinite idealization, but about making these constraints explicit and working within them systematically.
 
@@ -51,7 +51,7 @@ The ultrafinitist accepts local transitivity within resource bounds but rejects 
 - After k steps, available resources are exhausted
 - The "universal quantification" ∀n implicitly assumes infinite resources
 
-In RB-HOTT, induction becomes **resource-bounded induction**:
+In RB-TT, induction becomes **resource-bounded induction**:
 ```
 P(0) ∧ (∀n)[P(n) → P(n+1)] → (∀n ∈ Feasible[R])P(n)
 ```
@@ -71,13 +71,13 @@ From Alice's perspective, "1001" is not a meaningful mathematical object—it's 
 
 This resolves the apparent paradox of Volpin's Zenonian sets. A set can be finite globally but successor-closed locally because "global" and "local" are defined relative to resource bounds. Within Alice's resource context R₁, her number system is complete and successor-closed up to her limits.
 
-## Part II: Formalizing Resource-Bounded Mathematics: The RB-HOTT Framework
+## Part II: Formalizing Resource-Bounded Mathematics: The RB-TT Framework
 
 ### 2.1 The Family of Resource-Parameterized Type Theories
 
 Rather than seeking a single foundational system, we define a family of type theories:
 
-**RB-HOTT[R]** = Resource-Bounded Ultrafinitist Homotopy Type Theory parameterized by resource context R
+**RB-TT[R]** = Resource-Bounded Ultrafinitist Homotopy Type Theory parameterized by resource context R
 
 Each member of this family is a complete, coherent type theory suitable for mathematics within its resource bounds. Crucially:
 - There is no "universal" or "correct" choice of R
@@ -101,7 +101,7 @@ The soundness and completeness theorems become:
 - **Soundness**: If Γ ⊢[R] φ then VF[R] ⊨ φ
 - **Completeness**: If VF[R] ⊨ φ then Γ ⊢[R] φ
 
-This establishes RB-HOTT[R] as the correct logic for mathematics within resource context R.
+This establishes RB-TT[R] as the correct logic for mathematics within resource context R.
 
 ### 2.3 Resource Transfer and Scaling Laws
 
@@ -123,11 +123,11 @@ One of the most interesting aspects of the resource-bounded approach is the stud
 
 A theorem provable in R_human might be unprovable in R_computer and vice versa.
 
-## Part III: Syntax and Semantics of RB-HOTT[R]
+## Part III: Syntax and Semantics of RB-TT[R]
 
 ### 3.1 Resource-Aware Judgments
 
-The fundamental judgment form in RB-HOTT[R] is:
+The fundamental judgment form in RB-TT[R] is:
 ```
 Γ ⊢[R,r] t : A
 ```
@@ -202,7 +202,7 @@ This principle allows proving properties for all feasible numbers within resourc
 
 ### 4.1 Resource-Bounded Homotopy Types
 
-In RB-HOTT[R], types are interpreted as finite presentations of homotopy types, where all homotopical structure is bounded by available resources.
+In RB-TT[R], types are interpreted as finite presentations of homotopy types, where all homotopical structure is bounded by available resources.
 
 Key principles:
 - **Points** a:A are terms constructible within R
@@ -246,7 +246,7 @@ Quotient types A/~ are only well-formed if the equivalence relation ~ is decidab
 
 ### 4.4 Automatic Truncation and Resource Hierarchy
 
-RB-HOTT[R] exhibits **automatic truncation**: types become n-truncated when their (n+1)-dimensional structure would require resources exceeding R.
+RB-TT[R] exhibits **automatic truncation**: types become n-truncated when their (n+1)-dimensional structure would require resources exceeding R.
 
 This creates a natural hierarchy:
 - **R_minimal**: All types are sets (0-truncated)
@@ -260,7 +260,7 @@ The truncation level achievable depends entirely on available resources, making 
 
 ### 5.1 Mathematical Practice as Resource Management
 
-RB-HOTT[R] provides a framework for understanding actual mathematical practice as resource management. When a mathematician says "this proof is too complicated," they're making a statement about resource bounds. When they seek "elegant" proofs, they're optimizing for resource efficiency.
+RB-TT[R] provides a framework for understanding actual mathematical practice as resource management. When a mathematician says "this proof is too complicated," they're making a statement about resource bounds. When they seek "elegant" proofs, they're optimizing for resource efficiency.
 
 Different mathematical communities operate with different implicit resource contexts:
 - **Pure mathematicians**: High R.T and R.D (time and depth), moderate R.C (construction steps)
@@ -270,7 +270,7 @@ Different mathematical communities operate with different implicit resource cont
 
 ### 5.2 Formalized Metamathematics of Resource Bounds
 
-RB-HOTT[R] allows formalized study of resource requirements:
+RB-TT[R] allows formalized study of resource requirements:
 
 ```
 Theorem addition_resources : 
@@ -301,9 +301,9 @@ A theory can be consistent under one resource bound but inconsistent under anoth
 
 ### 5.4 Implementation and Practical Applications
 
-**Resource-Aware Proof Assistants**: RB-HOTT[R] suggests implementing proof assistants that explicitly track resource consumption and fail when bounds are exceeded. This would make resource limits visible rather than hidden.
+**Resource-Aware Proof Assistants**: RB-TT[R] suggests implementing proof assistants that explicitly track resource consumption and fail when bounds are exceeded. This would make resource limits visible rather than hidden.
 
-**Verified Resource-Bounded Computation**: Programs written in RB-HOTT[R] come with:
+**Verified Resource-Bounded Computation**: Programs written in RB-TT[R] come with:
 - Correctness proofs
 - Absolute resource bounds (not asymptotic)
 - Explicit resource requirement declarations
@@ -321,13 +321,13 @@ A theory can be consistent under one resource bound but inconsistent under anoth
 
 **Collaborative Resource Bounds**: How do resource bounds compose when multiple agents collaborate? What is the overhead of mathematical communication?
 
-**Resource-Bounded Computability**: What is the relationship between RB-HOTT[R] and classical computability theory? How do different resource bounds relate to complexity classes?
+**Resource-Bounded Computability**: What is the relationship between RB-TT[R] and classical computability theory? How do different resource bounds relate to complexity classes?
 
 **Empirical Resource Measurement**: Can we empirically measure the actual resource bounds of human mathematicians? How do these vary across individuals and domains?
 
 ## Conclusion: Mathematics as Resource-Bounded Activity
 
-Resource-Bounded Ultrafinitist Homotopy Type Theory represents a fundamental reconceptualization of mathematics itself. Rather than viewing resource constraints as unfortunate limitations to be overcome through infinite idealization, RB-HOTT[R] treats them as constitutive of mathematical meaning.
+Resource-Bounded Ultrafinitist Homotopy Type Theory represents a fundamental reconceptualization of mathematics itself. Rather than viewing resource constraints as unfortunate limitations to be overcome through infinite idealization, RB-TT[R] treats them as constitutive of mathematical meaning.
 
 This perspective has profound implications:
 
@@ -341,6 +341,6 @@ This perspective has profound implications:
 
 The framework suggests that the traditional question "What is mathematics?" should be replaced with "What is mathematics for agents with resource bounds R?" This shift from absolute to relative foundations may seem radical, but it simply makes explicit what has always been true: all mathematics is done by finite agents with finite resources.
 
-Rather than viewing this as a limitation, RB-HOTT[R] suggests it as the source of mathematics' power. By working systematically within constraints, mathematical reasoning becomes both more concrete and more universally applicable. The framework provides a foundation for mathematics that is simultaneously more humble about its limitations and more confident about its achievements within those limitations.
+Rather than viewing this as a limitation, RB-TT[R] suggests it as the source of mathematics' power. By working systematically within constraints, mathematical reasoning becomes both more concrete and more universally applicable. The framework provides a foundation for mathematics that is simultaneously more humble about its limitations and more confident about its achievements within those limitations.
 
 In the end, Resource-Bounded Ultrafinitist Homotopy Type Theory offers not a restriction of mathematics but a clarification of what mathematics has always been: the systematic exploration of structured reasoning within the constraints of finite minds working in a finite world.

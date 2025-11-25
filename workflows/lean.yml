@@ -16,4 +16,4 @@ jobs:
       - name: Build
         run: lake build
       - name: Run demo exe
-        run: lake exe rbhott
+        run: lake exe rbtt

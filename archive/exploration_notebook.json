@@ -7,7 +7,7 @@
     "# Resource-Bounded Ultrafinitist Homotopy Type Theory\n",
     "## Interactive Exploration Notebook\n",
     "\n",
-    "This notebook provides an interactive exploration of Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-UF-HoTT) concepts using Python to interface with the Lean 4 implementation.\n",
+    "This notebook provides an interactive exploration of Resource-Bounded Ultrafinitist Homotopy Type Theory (RB-UF-TT) concepts using Python to interface with the Lean 4 implementation.\n",
     "\n",
     "### Key Concepts\n",
     "- **Resource Contexts**: Mathematical reasoning is bounded by available resources\n",
@@ -38,7 +38,7 @@
     "# Setup notebook environment\n",
     "setup_notebook_environment()\n",
     "\n",
-    "# Create interface to RB-UF-HoTT\n",
+    "# Create interface to RB-UF-TT\n",
     "rb_interface = create_interface(\"..\")"
    ]
   },
@@ -50,7 +50,7 @@
    "source": [
     "# Check that Lean is available and the project builds\n",
     "if rb_interface.check_lean_availability():\n",
-    "    print(\"✓ Lean 4 is available and RB-UF-HoTT project builds successfully\")\n",
+    "    print(\"✓ Lean 4 is available and RB-UF-TT project builds successfully\")\n",
     "    print(\"Ready to explore resource-bounded mathematics!\")\n",
     "else:\n",
     "    print(\"✗ Lean 4 is not available or project doesn't build\")\n",

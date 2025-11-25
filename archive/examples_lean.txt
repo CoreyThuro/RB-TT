@@ -1,14 +1,14 @@
 /-
 Resource-Bounded Ultrafinitist Homotopy Type Theory
-File: RBHOTT/Examples.lean
+File: RBTT/Examples.lean
 Description: Practical examples and demonstrations of the system
 -/
 
-import RBHOTT.ResourceContext
-import RBHOTT.FeasibleNumbers
-import RBHOTT.ResourceBoundedTypes
+import RBTT.ResourceContext
+import RBTT.FeasibleNumbers
+import RBTT.ResourceBoundedTypes
 
-namespace RBHOTT.Examples
+namespace RBTT.Examples
 
 /-- Volpin's Hesitation: Modeling the famous anecdote about powers of 2 -/
 section VolpinHesitation
@@ -284,4 +284,4 @@ theorem addition_efficient (R : ResourceContext) (a b : ℕ) :
 
 end Performance
 
-end RBHOTT.Examples
+end RBTT.Examples

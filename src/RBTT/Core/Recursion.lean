@@ -1,11 +1,11 @@
-import RBHOTT.Core.STLC
+import RBTT.Core.STLC
 
-namespace RBHOTT
+namespace RBTT
 
 /-!
 # Recursion via Fuel and Depth Budgets
 
-This module implements safe recursion for RB-HoTT following paper §3.2, Lines 127-134.
+This module implements safe recursion for RB-TT following paper §3.2, Lines 127-134.
 
 ## Key Components:
 
@@ -252,4 +252,4 @@ To fully integrate this with STLC.lean:
 This modular approach allows incremental integration without breaking existing code.
 -/
 
-end RBHOTT
+end RBTT

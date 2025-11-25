@@ -1,9 +1,9 @@
-import RBHOTT.Core
-import RBHOTT.Examples.Lists
+import RBTT.Core
+import RBTT.Examples.Lists
 
-namespace RBHOTT.Examples
+namespace RBTT.Examples
 
-open RBHOTT Box
+open RBTT Box
 
 /-!
 # Cost Infrastructure Integration Tests
@@ -221,4 +221,4 @@ This confirms the cost infrastructure implementation is complete
 and correct according to the paper requirements.
 -/
 
-end RBHOTT.Examples
+end RBTT.Examples

@@ -1,6 +1,6 @@
 """
 Resource-Bounded Ultrafinitist Homotopy Type Theory - Python Interface
-A Python interface for interacting with RB-UF-HoTT Lean code from Jupyter notebooks.
+A Python interface for interacting with RB-UF-TT Lean code from Jupyter notebooks.
 """
 
 import subprocess
@@ -49,8 +49,8 @@ class FeasibleNumber:
     def __str__(self):
         return f"FeasibleNumber({self.value} in {self.context.name})"
 
-class RBUFHoTTInterface:
-    """Main interface for interacting with RB-UF-HoTT Lean code"""
+class RBUFTTInterface:
+    """Main interface for interacting with RB-UF-TT Lean code"""
     
     def __init__(self, project_path: str = "."):
         self.project_path = Path(project_path)
@@ -68,15 +68,15 @@ class RBUFHoTTInterface:
     def execute_lean(self, code: str, imports: List[str] = None) -> Tuple[bool, str, str]:
         """Execute Lean code and return success status, stdout, stderr"""
         if imports is None:
-            imports = ['RBUFHoTT.ResourceContext', 'RBUFHoTT.FeasibleNumbers', 'RBUFHoTT.Examples']
+            imports = ['RBUFTT.ResourceContext', 'RBUFTT.FeasibleNumbers', 'RBUFTT.Examples']
         
         # Create temporary Lean file
         temp_file = Path(self.temp_dir) / 'temp.lean'
         
         full_code = '\n'.join([f'import {imp}' for imp in imports])
-        full_code += '\n\nnamespace RBUFHoTT\n\n'
+        full_code += '\n\nnamespace RBUFTT\n\n'
         full_code += code
-        full_code += '\n\nend RBUFHoTT'
+        full_code += '\n\nend RBUFTT'
         
         with open(temp_file, 'w') as f:
             f.write(full_code)
@@ -406,11 +406,11 @@ def is_feasible : Prop := construction_cost test_number ≤ test_context.constru
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
 # Convenience functions for notebook use
-def create_interface(project_path: str = ".") -> RBUFHoTTInterface:
-    """Create and return a new RBUFHoTT interface"""
-    return RBUFHoTTInterface(project_path)
+def create_interface(project_path: str = ".") -> RBUFTTInterface:
+    """Create and return a new RBUFTT interface"""
+    return RBUFTTInterface(project_path)
 
-def quick_volpin_demo(interface: RBUFHoTTInterface):
+def quick_volpin_demo(interface: RBUFTTInterface):
     """Quick demonstration of Volpin's hesitation"""
     print("Volpin's Hesitation Demonstration")
     print("=" * 40)
@@ -439,7 +439,7 @@ def setup_notebook_environment():
     pd.set_option('display.width', None)
     pd.set_option('display.max_colwidth', 50)
     
-    print("RB-UF-HoTT Python Interface Ready!")
+    print("RB-UF-TT Python Interface Ready!")
     print("Use create_interface() to start exploring.")
 
 if __name__ == "__main__":

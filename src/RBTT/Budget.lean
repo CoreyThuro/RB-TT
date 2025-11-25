@@ -1,7 +1,7 @@
-import RBHOTT.Res
-import RBHOTT.Core.Modality
+import RBTT.Res
+import RBTT.Core.Modality
 
-namespace RBHOTT
+namespace RBTT
 
 /-!
 # Resource Budget Management
@@ -9,7 +9,7 @@ namespace RBHOTT
 **Status**: Supplementary infrastructure (NOT in official action list)
 **Relationship**: Complements Infra/BudgetDB.lean (allocation vs persistence)
 
-This module provides example infrastructure for managing resource budgets in RB-HoTT.
+This module provides example infrastructure for managing resource budgets in RB-TT.
 It builds on the ResCtx structure and cost-aware Box modality to enable:
 
 1. **Budget Allocation**: Strategies for distributing resources across operations
@@ -36,7 +36,7 @@ It builds on the ResCtx structure and cost-aware Box modality to enable:
 
 -/
 
-open RBHOTT Box
+open RBTT Box
 
 /-! ## Budget Allocation Strategies -/
 
@@ -329,4 +329,4 @@ theorem consume_less_remains_more {c₁ c₂ : Nat} {budget : ResCtx}
   omega
 
 
-end RBHOTT
+end RBTT

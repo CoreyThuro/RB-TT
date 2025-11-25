@@ -1,11 +1,11 @@
-import RBHOTT.Res
-import RBHOTT.Core.Modality
-import RBHOTT.Core.STLC
-import RBHOTT.Core.OpCost
-import RBHOTT.Core.Recursion
-import RBHOTT.Infra.Cost
+import RBTT.Res
+import RBTT.Core.Modality
+import RBTT.Core.STLC
+import RBTT.Core.OpCost
+import RBTT.Core.Recursion
+import RBTT.Infra.Cost
 
-namespace RBHOTT
+namespace RBTT
 
 structure FeasibleNat (R : ResCtx) where
   val   : Nat
@@ -47,4 +47,4 @@ def widen {R S : ResCtx} (h : R ≤ S) (x : FeasibleNat R) : FeasibleNat S :=
 
 end FeasibleNat
 
-end RBHOTT
+end RBTT

@@ -1,6 +1,6 @@
-import RBHOTT.Core
+import RBTT.Core
 
-namespace RBHOTT.Examples
+namespace RBTT.Examples
 
 /-!
 # Resource Context Properties - Test Suite
@@ -159,4 +159,4 @@ example (R : ResCtx) :
 
 end STLCTests
 
-end RBHOTT.Examples
+end RBTT.Examples

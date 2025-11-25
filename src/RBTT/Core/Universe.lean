@@ -1,12 +1,12 @@
-import RBHOTT.Res
+import RBTT.Res
 
-namespace RBHOTT
+namespace RBTT
 
 /-!
 # Resource-Indexed Universes (Scaffold)
 
 This module provides a scaffold implementation of resource-indexed universes
-for RB-HoTT, following paper §5 (lines 199-202).
+for RB-TT, following paper §5 (lines 199-202).
 
 ## Key Components
 
@@ -218,4 +218,4 @@ theorem zero_always_valid (R : ResCtx) :
     (TypeInUniverse.zero R).bound = 0 := rfl
 
 
-end RBHOTT
+end RBTT
