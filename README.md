@@ -1,22 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1512" height="1512" viewBox="0 0 512 512">
-  <!-- Background -->
-  <rect x="32" y="32" width="448" height="448" rx="96" ry="96" fill="#0b1020"/>
-  <!-- Lambda -->
-  <text x="180" y="320" font-family="Iosevka, Menlo, Consolas, monospace"
-        font-size="220" fill="#f5f5f5">λ</text>
-  <!-- RB tag -->
-  <rect x="270" y="115" width="120" height="70" rx="12" ry="12" fill="#1f2a4d"/>
-  <text x="282" y="163" font-family="Iosevka, Menlo, Consolas, monospace"
-        font-weight="600" font-size="34" fill="#ffcc4d">RB</text>
-  <!-- Cost bars -->
-  <rect x="310" y="290" width="22" height="80" fill="#3dd5f3"/>
-  <rect x="344" y="260" width="22" height="110" fill="#38c172"/>
-  <rect x="378" y="230" width="22" height="140" fill="#ffcc4d"/>
-  <!-- Caption TT -->
-  <text x="210" y="385" font-family="Iosevka, Menlo, Consolas, monospace"
-        font-size="44" letter-spacing="6" fill="#9ca3af">TT</text>
-</svg>
-
 # RB-TT — Resource-Bounded Type Theory
 
 ![RB-TT logo](docs/rbtt-logo.svg)
