@@ -14,6 +14,14 @@ def ResCtx.le (R S : ResCtx) : Prop :=
 instance : LE ResCtx where
   le := ResCtx.le
 
+/-- Decidability instance for resource context ordering. -/
+instance (R S : ResCtx) : Decidable (R ≤ S) :=
+  match Nat.decLe R.time S.time, Nat.decLe R.memory S.memory, Nat.decLe R.depth S.depth with
+  | isTrue h1, isTrue h2, isTrue h3 => isTrue ⟨h1, h2, h3⟩
+  | isFalse h1, _, _ => isFalse (fun ⟨h, _, _⟩ => h1 h)
+  | _, isFalse h2, _ => isFalse (fun ⟨_, h, _⟩ => h2 h)
+  | _, _, isFalse h3 => isFalse (fun ⟨_, _, h⟩ => h3 h)
+
 @[simp] theorem le_refl (R : ResCtx) : R ≤ R := by
   exact ⟨Nat.le_refl _, Nat.le_refl _, Nat.le_refl _⟩
 
