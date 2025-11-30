@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" width="1512" height="1512" viewBox="0 0 512 512">
   <!-- Background -->
   <rect x="32" y="32" width="448" height="448" rx="96" ry="96" fill="#0b1020"/>
   <!-- Lambda -->
