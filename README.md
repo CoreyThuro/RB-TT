@@ -5,43 +5,60 @@
 Resource-Bounded Type Theory (RB-TT) is a small typed λ-calculus for **compositional cost analysis**.
 
 Terms are typed with synthesized bounds drawn from an abstract **resource lattice**  
-\((L, \preceq, \oplus, \bot)\), and a graded **feasibility modality** □ᵣ tracks which programs are
+\((L, \preceq, \oplus, ot)\), and a graded **feasibility modality** □ᵣ tracks which programs are
 admissible under a given resource budget.
 
-The project contains:
-
-- the **core calculus** (syntax, typing, and operational cost semantics),
-- a **syntactic cost soundness theorem** (“typed bound ≥ operational cost”),
-- a **presheaf-style model** in `Set^L` (in the accompanying paper `RB_TT.pdf`), and
-- a **Lean 4 formalization** of the syntactic system and examples (e.g. binary search).
-
-> 📄 The companion paper lives in `RB_TT.pdf` and is the canonical specification of the system.
+The mathematical development is described in the companion paper `RB_TT.pdf`.  
+This repository contains the **Lean 4 implementation of the core syntax, typing,
+and cost infrastructure**, plus **example programs** (e.g. binary search).  
+The main metatheorems are currently **stated but not yet fully proved** in Lean.
 
 ---
 
-## Features
+## What’s in this repo (current status)
+
+- ✅ **Core calculus definitions**
+  - Resource contexts (`ResCtx`) and lattice structure
+  - Types, terms, and typing judgment `Γ ⊢[R;b] t : A`
+- ✅ **Operational cost infrastructure**
+  - Small-step semantics with step counting
+  - Multi-step evaluation with accumulated cost
+- ✅ **Example programs**
+  - Fuel-based binary search and other small examples
+- 🟡 **Theorem statements (work in progress)**
+  - Type soundness (progress + preservation)
+  - Cost soundness (“typed bound ≥ operational cost”)
+  - Recursive bounds and binary search complexity
+- 🟡 **Presheaf-style semantics scaffolding**
+  - Basic presheaf and natural transformation definitions in Lean
+  - Proof obligations and laws are marked with `sorry` and TODO
+
+> In other words: the **definitions are implemented**, but many **proofs are still
+> axioms or `sorry` stubs** and will be completed in future work.
+
+---
+
+## Features (mathematical side — see the paper)
 
 - **Abstract resource lattice**  
-  Treat time, steps, gas, memory, or domain-specific quantities uniformly via \((L, \preceq, \oplus, \bot)\).
+  Treat time, steps, gas, memory, or domain-specific quantities uniformly via  
+  \((L, \preceq, \oplus, ot)\).
 
 - **Graded feasibility modality `□ᵣ`**  
-  Express that a computation is feasible under budget `r`, with counit and monotonicity laws.
+  Express that a computation is feasible under budget `r`, with counit and
+  monotonicity laws.
 
 - **Compositional cost bounds**  
-  Typing rules synthesize bounds `b` for terms; application, pairing, conditionals, etc. combine bounds
-  via `⊕` and lattice joins.
+  Typing rules synthesize bounds `b` for terms; application, pairing, conditionals,
+  etc. combine bounds via `⊕` and lattice joins.
 
-- **Syntactic cost soundness**  
-  If a closed term is typable with bound `b` under budget `r`, then its operational cost is bounded by `b`
-  in the chosen cost model.
-
-- **Lean 4 development**  
-  The core calculus, operational semantics, and example bounds are mechanized in Lean 4
-  and organized as a Lake project.
+- **Syntactic and semantic soundness (on paper)**  
+  The paper proves type soundness, cost soundness, and a presheaf model in `Set^L`.
+  These theorems are currently **not fully mechanized** in Lean.
 
 ---
 
-## Getting started
+## Getting started (Lean)
 
 ### Prerequisites
 
@@ -51,7 +68,7 @@ The project contains:
 
 Optional but recommended:
 
-- VS Code + Lean 4 extension for interactive exploration.
+- VS Code + Lean 4 extension.
 
 ### Clone and build
 
@@ -63,28 +80,23 @@ cd RB-TT
 lake build
 ```
 
-If you use VS Code, just open the `RB-TT` folder and the Lean extension will pick up
-the `lean-toolchain` and `lakefile.lean`. Wait for the project to finish building, then
-you can jump through definitions and theorems interactively.
+Open the folder in VS Code and let the Lean extension index the project.
 
 ---
 
 ## Repository layout
 
-At a high level:
-
-- `RB_TT.pdf` – main paper describing the theory and semantics.
-- `src/` – Lean 4 source:
-  - core syntax and typing rules for RB-TT,
-  - operational semantics with cost,
-  - key theorems (preservation, progress, and cost soundness),
-  - example developments.
-- `demo/` – demo scripts / Lean files illustrating end-to-end cost reasoning.
-- `docs/` – documentation assets (you can place the logo here as `rbtt-logo.png`).
-- `.github/` – CI configuration (e.g. to run Lean on pushes).
-- `lakefile.lean`, `lake-manifest.json`, `lean-toolchain` – standard Lake / Lean project files.
-
-(Details of the internal module structure are best read directly in the Lean files.)
+- `RB_TT.pdf` – main paper (the canonical specification of the theory).
+- `src/`
+  - `RBTT/Res.lean` — resource contexts and basic operations
+  - `RBTT/Core.lean`, `RBTT/Core/STLC.lean` — syntax and typing
+  - `RBTT/Core/OpCost.lean` — small-step semantics and cost (with TODO theorems)
+  - `RBTT/Core/Recursion.lean` — recursion patterns (partially proved, TODOs)
+  - `RBTT/Examples/BinarySearch.lean` — binary search implementation and theorem stubs
+  - `RBTT/Semantics/PresheafSet.lean` — presheaf semantics scaffold with `sorry`s
+- `docs/` – documentation assets (e.g. `rbtt-logo.svg`).
+- `.github/` – CI config (budget checks, etc.).
+- `lakefile.lean`, `lake-manifest.json`, `lean-toolchain` – Lake / Lean project files.
 
 ---
 
@@ -92,16 +104,14 @@ At a high level:
 
 If you want to experiment with RB-TT inside another Lean 4 project:
 
-1. Add this repository as a Lake dependency in your own `lakefile.lean`:
+1. Add this repository as a Lake dependency in your `lakefile.lean`:
 
    ```lean
    package myproj
 
-   require rbtt from git
+   require rbt t from git
      "https://github.com/CoreyThuro/RB-TT.git"
    ```
-
-   (Adjust the name and revision as you see fit.)
 
 2. Run:
 
@@ -110,39 +120,19 @@ If you want to experiment with RB-TT inside another Lean 4 project:
    lake build
    ```
 
-3. In your Lean files you can then import the relevant modules, e.g.
+3. Import the relevant modules, e.g.
 
    ```lean
-   import RBTT.Core   -- example; use the actual module names from src/
+   import RBTT.Core         -- syntax + typing
+   import RBTT.Core.OpCost  -- cost semantics (with TODO theorems)
    ```
-
-   and start defining your own resource-bounded terms and proofs on top.
-
----
-
-## Running (or extending) examples
-
-- Look in `demo/` for example developments showing:
-  - how to encode simple functions in RB-TT,
-  - how synthesized bounds behave under λ-abstraction, application, conditionals, etc.,
-  - a binary-search case study with a derived cost bound.
-
-- To add your own example:
-  1. Create a new Lean file under `src/` or `demo/`.
-  2. Import the core RB-TT modules.
-  3. Define your function/program and its intended bound.
-  4. Prove that the typing judgment derives that bound, and (optionally) show the operational cost is ≤ it.
-
-The paper gives the intended typing and cost rules; the Lean development makes them checkable.
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License**.
-
-Once the license file is settled, place the standard MIT license text in `LICENSE`
-(or update the existing license file) so that GitHub correctly detects it.
+This project is licensed under the **MIT License**.  
+Please see the `LICENSE` file for the full text.
 
 ---
 
@@ -153,3 +143,4 @@ If you use RB-TT in research, please cite the accompanying paper:
 > Mirco A. Mannucci, Corey Thuro. *Resource-Bounded Type Theory:  
 > Compositional Cost Analysis via Graded Modalities*, 2025.  
 > (See `RB_TT.pdf` in this repository.)
+
