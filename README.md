@@ -79,9 +79,8 @@ At a high level:
   - operational semantics with cost,
   - key theorems (preservation, progress, and cost soundness),
   - example developments.
-- `demo/` – demo scripts / Lean files illustrating end-to-end cost reasoning
-  (e.g. binary search).
-- `docs/` – documentation assets (you can place the logo here as `rbtt-logo.svg`).
+- `demo/` – demo scripts / Lean files illustrating end-to-end cost reasoning.
+- `docs/` – documentation assets (you can place the logo here as `rbtt-logo.png`).
 - `.github/` – CI configuration (e.g. to run Lean on pushes).
 - `lakefile.lean`, `lake-manifest.json`, `lean-toolchain` – standard Lake / Lean project files.
 
@@ -98,7 +97,7 @@ If you want to experiment with RB-TT inside another Lean 4 project:
    ```lean
    package myproj
 
-   require rbt t from git
+   require rbtt from git
      "https://github.com/CoreyThuro/RB-TT.git"
    ```
 
