@@ -1,6 +1,6 @@
 # RB-TT — Resource-Bounded Type Theory
 
-![RB-TT logo](docs/rbtt-logo.svg)
+![RB-TT logo](docs/rbtt-logo.png)
 
 Resource-Bounded Type Theory (RB-TT) is a small typed λ-calculus for **compositional cost analysis**.
 
