@@ -1,18 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <!-- Background -->
-  <rect x="32" y="32" width="448" height="448" rx="96" ry="96" fill="#0b1020"/>
-  <!-- Lambda -->
-  <text x="180" y="320" font-family="Iosevka, Menlo, Consolas, monospace"
-        font-size="220" fill="#f5f5f5">λ</text>
-  <!-- RB tag -->
-  <rect x="270" y="115" width="120" height="70" rx="12" ry="12" fill="#1f2a4d"/>
-  <text x="282" y="163" font-family="Iosevka, Menlo, Consolas, monospace"
-        font-weight="600" font-size="34" fill="#ffcc4d">RB</text>
-  <!-- Cost bars -->
-  <rect x="310" y="290" width="22" height="80" fill="#3dd5f3"/>
-  <rect x="344" y="260" width="22" height="110" fill="#38c172"/>
-  <rect x="378" y="230" width="22" height="140" fill="#ffcc4d"/>
-  <!-- Caption TT -->
-  <text x="210" y="385" font-family="Iosevka, Menlo, Consolas, monospace"
-        font-size="44" letter-spacing="6" fill="#9ca3af">TT</text>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fde047;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#eab308;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="100" ry="100" fill="#0d1117" />
+
+  <g transform="translate(130, 120) scale(1.0)">
+    
+    <g fill="#9ca3af">
+      <rect x="0" y="200" width="80" height="15" />
+      <rect x="32" y="200" width="16" height="75" />
+      <rect x="90" y="200" width="80" height="15" />
+      <rect x="122" y="200" width="16" height="75" />
+    </g>
+
+    <path d="M 60 30 
+             C 70 20, 90 20, 100 35 
+             L 130 100 
+             L 160 180 
+             L 135 180 
+             L 115 125 
+             L 60 180 
+             L 35 180 
+             L 100 110 
+             L 80 60 
+             C 75 50, 65 50, 60 55 Z" 
+          fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+
+    <g transform="translate(130, 80)">
+      <rect x="0" y="70" width="20" height="30" rx="3" fill="url(#grad1)" />
+      <rect x="30" y="40" width="20" height="60" rx="3" fill="url(#grad2)" />
+      <rect x="60" y="10" width="20" height="90" rx="3" fill="url(#grad3)" />
+    </g>
+
+    <g transform="translate(110, 20) rotate(15)">
+       <path d="M -20 25 Q -40 25, -45 40" stroke="white" stroke-width="3" fill="none" />
+       
+       <rect x="0" y="0" width="90" height="50" rx="10" fill="#3b5e8c" />
+       
+       <circle cx="10" cy="25" r="4" fill="#0d1117" opacity="0.5"/>
+
+       <text x="45" y="35" 
+             font-family="Arial, Helvetica, sans-serif" 
+             font-weight="bold" 
+             font-size="30" 
+             text-anchor="middle" 
+             fill="#fcd34d">RB</text>
+    </g>
+
+  </g>
 </svg>
