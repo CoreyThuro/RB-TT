@@ -117,9 +117,9 @@ theorem value_no_step {A : Ty} {t t' : Tm [] A} : Value t → Step t t' → Fals
     case pair =>
         cases hs
         case pair_right =>
-        sorry
+            sorry
         case pair_left =>
-        sorry
+            sorry
     case natLit =>
         cases hs
         done
@@ -134,7 +134,7 @@ theorem value_no_step {A : Ty} {t t' : Tm [] A} : Value t → Step t t' → Fals
 theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
     Step t t' → Step t t'' → t' = t'' := by
     intro h1 h2
-    cases h1
+    induction h1
     case beta =>
         cases h2
         case beta =>
@@ -142,7 +142,7 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
         case app_left => contradiction
         case app_right =>
             exfalso
-            rename_i _ _ hv _ _ _ hstep
+            rename_i _ _ hv _ _ hstep
             exact value_no_step hv hstep
     case ite_true =>
         cases h2
@@ -164,8 +164,8 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
             rfl
         case fst_cong =>
         exfalso
-        rename_i  _ _ hv1 hv2 _ hstep
-        exact value_no_step (Value.pair hv2 hv1) hstep
+        rename_i  _ _ _ hv1 hv2 _ hstep
+        exact value_no_step (Value.pair hv1 hv2) hstep
     case snd_pair =>
         cases h2
         case snd_pair =>
@@ -180,9 +180,9 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
             exfalso
             exact value_no_step Value.lam ‹_›
         case app_left =>
-            rename_i  _ _ h1   _ h2 _
-            have : h1 = h2 := step_deterministic ‹_› ‹_›
-            rw [this]
+            congr
+            rename_i h _ _
+            exact h ‹_›
         case app_right =>
             exfalso
             exact value_no_step ‹Value _› ‹_ →₁ _›
@@ -204,13 +204,13 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
             exact step_deterministic ‹_› ‹_›
         case pair_right =>
             exfalso
-            rename_i _ _ _ _ _ hstep _ hval _
+            rename_i  _ _ _ _ _ hstep _ _ hval _
             exact value_no_step hval hstep
     case pair_right =>
         cases h2
         case pair_left =>
             exfalso
-            rename_i _ _ _ h1 _ _ hstep
+            rename_i _ _ _ _ h1 _ _ _ hstep
             exact value_no_step h1 hstep
         case pair_right =>
             congr
@@ -219,7 +219,7 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
         cases h2
         case fst_pair =>
             exfalso
-            rename_i _ _ _ hv2 hv1 hstep
+            rename_i _ _ _ hv2 hv1 hstep _
             exact value_no_step (Value.pair hv1 hv2) hstep
         case fst_cong =>
             congr
@@ -228,7 +228,7 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
         cases h2
         case snd_pair =>
             exfalso
-            rename_i hv1 hv2 hstep
+            rename_i hv1 hv2 hstep _
             exact value_no_step (Value.pair hv1 hv2) hstep
         case snd_cong =>
             congr
@@ -244,9 +244,6 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
         case ite_cond =>
             congr
             exact step_deterministic ‹_› ‹_›
-
-
-
 
 
 
