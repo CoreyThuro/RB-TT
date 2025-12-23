@@ -108,9 +108,147 @@ notation:50 t " ⇒*[" k "] " v => MultiStep t v k
 
 /-! ## Basic Properties -/
 
+theorem value_no_step {A : Ty} {t t' : Tm [] A} : Value t → Step t t' → False :=  by
+    intro hv hs
+    cases hv
+    case lam =>
+        cases hs
+        done
+    case pair =>
+        cases hs
+        case pair_right =>
+        sorry
+        case pair_left =>
+        sorry
+    case natLit =>
+        cases hs
+        done
+    case true =>
+        cases hs
+        done
+    case false =>
+        cases hs
+        done
+
 /-- Determinism: reduction is deterministic -/
-axiom step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
-    Step t t' → Step t t'' → t' = t''
+theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
+    Step t t' → Step t t'' → t' = t'' := by
+    intro h1 h2
+    cases h1
+    case beta =>
+        cases h2
+        case beta =>
+            rfl
+        case app_left => contradiction
+        case app_right =>
+            exfalso
+            rename_i _ _ hv _ _ _ hstep
+            exact value_no_step hv hstep
+    case ite_true =>
+        cases h2
+        case ite_true =>
+            rfl
+        case ite_cond =>
+            exfalso
+            exact value_no_step Value.true ‹_›
+    case ite_false =>
+        cases h2
+        case ite_false =>
+            rfl
+        case ite_cond =>
+            exfalso
+            exact value_no_step Value.false ‹_›
+    case fst_pair =>
+        cases h2
+        case fst_pair =>
+            rfl
+        case fst_cong =>
+        exfalso
+        rename_i  _ _ hv1 hv2 _ hstep
+        exact value_no_step (Value.pair hv2 hv1) hstep
+    case snd_pair =>
+        cases h2
+        case snd_pair =>
+            rfl
+        case snd_cong =>
+        exfalso
+        rename_i _ _ hv1 hv2 _ hstep
+        exact value_no_step (Value.pair hv1 hv2) hstep
+    case app_left =>
+        cases h2
+        case beta =>
+            exfalso
+            exact value_no_step Value.lam ‹_›
+        case app_left =>
+            rename_i  _ _ h1   _ h2 _
+            have : h1 = h2 := step_deterministic ‹_› ‹_›
+            rw [this]
+        case app_right =>
+            exfalso
+            exact value_no_step ‹Value _› ‹_ →₁ _›
+    case app_right =>
+        cases h2
+        case beta =>
+            exfalso
+            exact value_no_step ‹Value _› ‹_ →₁ _›
+        case app_left =>
+            exfalso
+            exact value_no_step ‹Value _› ‹_ →₁ _›
+        case app_right =>
+            congr
+            exact step_deterministic ‹_› ‹_›
+    case pair_left =>
+        cases h2
+        case pair_left =>
+            congr
+            exact step_deterministic ‹_› ‹_›
+        case pair_right =>
+            exfalso
+            rename_i _ _ _ _ _ hstep _ hval _
+            exact value_no_step hval hstep
+    case pair_right =>
+        cases h2
+        case pair_left =>
+            exfalso
+            rename_i _ _ _ h1 _ _ hstep
+            exact value_no_step h1 hstep
+        case pair_right =>
+            congr
+            exact step_deterministic ‹_› ‹_›
+    case fst_cong =>
+        cases h2
+        case fst_pair =>
+            exfalso
+            rename_i _ _ _ hv2 hv1 hstep
+            exact value_no_step (Value.pair hv1 hv2) hstep
+        case fst_cong =>
+            congr
+            exact step_deterministic ‹_› ‹_›
+    case snd_cong =>
+        cases h2
+        case snd_pair =>
+            exfalso
+            rename_i hv1 hv2 hstep
+            exact value_no_step (Value.pair hv1 hv2) hstep
+        case snd_cong =>
+            congr
+            exact step_deterministic ‹_› ‹_›
+    case ite_cond =>
+        cases h2
+        case ite_true =>
+            exfalso
+            exact value_no_step Value.true ‹_›
+        case ite_false =>
+            exfalso
+            exact value_no_step Value.false ‹_›
+        case ite_cond =>
+            congr
+            exact step_deterministic ‹_› ‹_›
+
+
+
+
+
 
 /-- Progress: closed well-typed terms are either values or can step -/
 axiom progress {A : Ty} {R : ResCtx} {b : Nat} {t : Tm [] A} :
