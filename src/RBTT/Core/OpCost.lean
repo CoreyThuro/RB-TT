@@ -115,11 +115,14 @@ theorem value_no_step {A : Ty} {t t' : Tm [] A} : Value t → Step t t' → Fals
         cases hs
         done
     case pair =>
+        rename_i va vb
         cases hs
         case pair_right =>
-            sorry
+            rename_i _ hstep
+            exact value_no_step vb hstep
         case pair_left =>
-            sorry
+            rename_i hstep
+            exact value_no_step va hstep
     case natLit =>
         cases hs
         done
@@ -245,11 +248,46 @@ theorem step_deterministic {A : Ty} {t t' t'' : Tm [] A} :
             congr
             exact step_deterministic ‹_› ‹_›
 
-
-
 /-- Progress: closed well-typed terms are either values or can step -/
-axiom progress {A : Ty} {R : ResCtx} {b : Nat} {t : Tm [] A} :
-    ([] ⊢[R;b] t : A) → Value t ∨ ∃ t', Step t t'
+theorem progress {A : Ty} {R : ResCtx} {b : Nat} {t : Tm [] A} :
+    ([] ⊢[R;b] t : A) → Value t ∨ ∃ t', Step t t' := fun h =>
+  match h with
+  | HasBound.var (x := x) => nomatch x
+  | HasBound.lam _ => .inl Value.lam
+  | HasBound.natLit => .inl Value.natLit
+  | HasBound.true => .inl Value.true
+  | HasBound.false => .inl Value.false
+  | HasBound.app hf ha =>
+      match progress hf with
+      | .inl Value.lam =>
+          match progress ha with
+          | .inl va => .inr ⟨_, Step.beta va⟩
+          | .inr ⟨a', hstep⟩ => .inr ⟨_, Step.app_right Value.lam hstep⟩
+      | .inr ⟨f', hstep⟩ => .inr ⟨_, Step.app_left hstep⟩
+  | HasBound.pair ha hb =>
+      match progress ha with
+      | .inl va =>
+          match progress hb with
+          | .inl vb => .inl (Value.pair va vb)
+          | .inr ⟨b', hstep⟩ => .inr ⟨_, Step.pair_right va hstep⟩
+      | .inr ⟨a', hstep⟩ => .inr ⟨_, Step.pair_left hstep⟩
+  | HasBound.fst hp =>
+      match progress hp with
+      | .inl (Value.pair va vb) => .inr ⟨_, Step.fst_pair va vb⟩
+      | .inr ⟨p', hstep⟩ => .inr ⟨_, Step.fst_cong hstep⟩
+  | HasBound.snd hp =>
+      match progress hp with
+      | .inl (Value.pair va vb) => .inr ⟨_, Step.snd_pair va vb⟩
+      | .inr ⟨p', hstep⟩ => .inr ⟨_, Step.snd_cong hstep⟩
+  | HasBound.ite hc ht hf =>
+      match progress hc with
+      | .inl Value.true => .inr ⟨_, Step.ite_true⟩
+      | .inl Value.false => .inr ⟨_, Step.ite_false⟩
+      | .inr ⟨c', hstep⟩ => .inr ⟨_, Step.ite_cond hstep⟩
+termination_by b
+decreasing_by
+  simp_wf
+  all_goals omega
 
 /-- Preservation: reduction preserves types and doesn't increase bounds -/
 axiom preservation {A : Ty} {R : ResCtx} {b b' : Nat} {t t' : Tm [] A} :
