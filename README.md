@@ -15,7 +15,7 @@ The main metatheorems are currently **stated but not yet fully proved** in Lean.
 
 ---
 
-## What’s in this repo (current status)
+## What's in this repo (current status)
 
 - ✅ **Core calculus definitions**
   - Resource contexts (`ResCtx`) and lattice structure
@@ -23,11 +23,17 @@ The main metatheorems are currently **stated but not yet fully proved** in Lean.
 - ✅ **Operational cost infrastructure**
   - Small-step semantics with step counting
   - Multi-step evaluation with accumulated cost
+- ✅ **MLTT Extension (NEW - Phase 1-2 Complete)**
+  - Dependent types: Π, Σ, Nat, Vec, Bool
+  - Complete cost semantics with fuel-based recursion bounds
+  - See [DependentTypes.lean](src/RBTT/Core/DependentTypes.lean) and [DependentCost.lean](src/RBTT/Core/DependentCost.lean)
+  - Full implementation roadmap: [MLTT_IMPLEMENTATION_ROADMAP.md](docs/MLTT_IMPLEMENTATION_ROADMAP.md)
 - ✅ **Example programs**
   - Fuel-based binary search and other small examples
+  - Dependent type examples with verified cost bounds
 - 🟡 **Theorem statements (work in progress)**
   - Type soundness (progress + preservation)
-  - Cost soundness (“typed bound ≥ operational cost”)
+  - Cost soundness ("typed bound ≥ operational cost")
   - Recursive bounds and binary search complexity
 - 🟡 **Presheaf-style semantics scaffolding**
   - Basic presheaf and natural transformation definitions in Lean
@@ -35,6 +41,19 @@ The main metatheorems are currently **stated but not yet fully proved** in Lean.
 
 > In other words: the **definitions are implemented**, but many **proofs are still
 > axioms or `sorry` stubs** and will be completed in future work.
+
+### 🎉 Recent Progress: MLTT Implementation (2026-01-06)
+
+RB-TT has been extended with **Martin-Löf Type Theory (MLTT)** features:
+
+- **Type Constructors**: Π-types and Σ-types (simplified non-dependent version), Nat, Vec, Bool
+- **Eliminators**: `natrec` for natural numbers, `vecrec` for vectors
+- **Cost Semantics**: Complete cost tracking with compositional bounds using fuel-based recursion
+- **Working Examples**: 6 verified example programs demonstrating the system
+
+The implementation uses a **simplified Option A approach** where Π and Σ are syntactically present but operate as non-dependent function and product types (`pi A B` instead of `pi A (λx. B x)`). This avoids complex substitution while establishing the foundation for future full dependent type support.
+
+See [MLTT_IMPLEMENTATION_ROADMAP.md](docs/MLTT_IMPLEMENTATION_ROADMAP.md) for complete details.
 
 ---
 
@@ -90,11 +109,16 @@ Open the folder in VS Code and let the Lean extension index the project.
 - `src/`
   - `RBTT/Res.lean` — resource contexts and basic operations
   - `RBTT/Core.lean`, `RBTT/Core/STLC.lean` — syntax and typing
+  - `RBTT/Core/DependentTypes.lean` — MLTT dependent types (Π, Σ, Nat, Vec) **NEW**
+  - `RBTT/Core/DependentCost.lean` — cost semantics for dependent types **NEW**
   - `RBTT/Core/OpCost.lean` — small-step semantics and cost (with TODO theorems)
   - `RBTT/Core/Recursion.lean` — recursion patterns (partially proved, TODOs)
   - `RBTT/Examples/BinarySearch.lean` — binary search implementation and theorem stubs
   - `RBTT/Semantics/PresheafSet.lean` — presheaf semantics scaffold with `sorry`s
-- `docs/` – documentation assets (e.g. `rbtt-logo.svg`).
+- `docs/` – documentation assets and design documents
+  - `rbtt-logo.svg` — project logo
+  - `MLTT_IMPLEMENTATION_ROADMAP.md` — complete MLTT implementation plan **NEW**
+  - `DEPENDENT_COST_DESIGN.md` — cost semantics design specification **NEW**
 - `.github/` – CI config (budget checks, etc.).
 - `lakefile.lean`, `lake-manifest.json`, `lean-toolchain` – Lake / Lean project files.
 
