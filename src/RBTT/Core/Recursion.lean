@@ -194,8 +194,8 @@ For now, we provide the typing rule separately
 -/
 axiom fix_has_bound {Γ : Ctx} {A B : Ty} {R : ResCtx} {b : Nat}
     (h_depth : R.depth > 0)
-    (h_body : HasBound ((A ⇒ B) :: (A :: Γ)) R b (sorry : Tm ((A ⇒ B) :: (A :: Γ)) B) B) :
-    HasBound Γ R (R.depth * b) (sorry : Tm Γ (A ⇒ B)) (A ⇒ B)
+    (h_body : HasBound ((A ⇒ B) :: (A :: Γ)) R b (sorry : Tm ((A ⇒ B) :: (A :: Γ)) B)) :
+    HasBound Γ R (R.depth * b) (sorry : Tm Γ (A ⇒ B))
 
 /-! ## Examples of Recursive Bounds -/
 

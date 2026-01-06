@@ -100,59 +100,76 @@ This corresponds to the paper's `Γ ⊢_{R;b} t : A`.
 
 -/
 
-/-- Typing judgment with resource bounds (§3.2, Lines 109-130) -/
-inductive HasBound : Ctx → ResCtx → Nat → Tm Γ A → Ty → Prop where
+/-- Exact compositional cost judgment (§3.2, Lines 109-130)
+
+**Architecture**: Split into HasCost (exact, inductive) + HasBound (≤ wrapper, definition)
+
+This encoding:
+- **HasCost**: Exact compositional arithmetic with indices (Γ can vary in lam)
+- **HasBound**: Upper bound wrapper as definition (avoids fuel recursion issues)
+- **Clean induction**: Structural induction on HasCost derivation
+- **Matches paper**: Exact bound synthesis from Figure 1
+-/
+inductive HasCost (R : ResCtx) : (Γ : Ctx) → {A : Ty} → Tm Γ A → Nat → Prop where
   /-- Variable lookup (cost: 0) -/
-  | var : HasBound Γ R 0 (Tm.var x) A
+  | var {Γ : Ctx} {A : Ty} {x : Var Γ A} :
+      HasCost R Γ (Tm.var x) 0
 
-  /-- Lambda abstraction (cost: 0 for the abstraction itself) -/
-  | lam {t : Tm (A :: Γ) B} :
-      HasBound (A :: Γ) R b_body t B →
-      HasBound Γ R 0 (Tm.lam t) (A ⇒ B)
+  /-- Lambda abstraction (latent cost: carries body cost) -/
+  | lam {Γ : Ctx} {A B : Ty} {t : Tm (A :: Γ) B} {k : Nat} :
+      HasCost R (A :: Γ) t k →
+      HasCost R Γ (Tm.lam t) k
 
-  /-- Application: b_f + b_a + 1 (Line 116-117) -/
-  | app {f : Tm Γ (A ⇒ B)} {a : Tm Γ A} :
-      HasBound Γ R b_f f (A ⇒ B) →
-      HasBound Γ R b_a a A →
-      HasBound Γ R (b_f + b_a + 1) (Tm.app f a) B
+  /-- Application: kf + ka + 1 (Line 116-117) -/
+  | app {Γ : Ctx} {A B : Ty} {f : Tm Γ (A ⇒ B)} {a : Tm Γ A} {kf ka : Nat} :
+      HasCost R Γ f kf →
+      HasCost R Γ a ka →
+      HasCost R Γ (Tm.app f a) (kf + ka + 1)
 
-  /-- Pair: b_a + b_b (Line 119-120) -/
-  | pair {a : Tm Γ A} {b : Tm Γ B} :
-      HasBound Γ R b_a a A →
-      HasBound Γ R b_b b B →
-      HasBound Γ R (b_a + b_b) (Tm.pair a b) (A × B)
+  /-- Pair: ka + kb (Line 119-120) -/
+  | pair {Γ : Ctx} {A B : Ty} {a : Tm Γ A} {t_b : Tm Γ B} {ka kb : Nat} :
+      HasCost R Γ a ka →
+      HasCost R Γ t_b kb →
+      HasCost R Γ (Tm.pair a t_b) (ka + kb)
 
   /-- First projection (cost: 1) -/
-  | fst {p : Tm Γ (A × B)} :
-      HasBound Γ R b_p p (A × B) →
-      HasBound Γ R (b_p + 1) (Tm.fst p) A
+  | fst {Γ : Ctx} {A B : Ty} {p : Tm Γ (A × B)} {kp : Nat} :
+      HasCost R Γ p kp →
+      HasCost R Γ (Tm.fst p) (kp + 1)
 
   /-- Second projection (cost: 1) -/
-  | snd {p : Tm Γ (A × B)} :
-      HasBound Γ R b_p p (A × B) →
-      HasBound Γ R (b_p + 1) (Tm.snd p) B
+  | snd {Γ : Ctx} {A B : Ty} {p : Tm Γ (A × B)} {kp : Nat} :
+      HasCost R Γ p kp →
+      HasCost R Γ (Tm.snd p) (kp + 1)
 
   /-- Natural number literal (cost: 0) -/
-  | natLit :
-      HasBound Γ R 0 (Tm.natLit n) .nat
+  | natLit {Γ : Ctx} {n : Nat} :
+      HasCost R Γ (Tm.natLit n) 0
 
   /-- Boolean literals (cost: 0) -/
-  | true :
-      HasBound Γ R 0 Tm.true .bool
-  | false :
-      HasBound Γ R 0 Tm.false .bool
+  | true {Γ : Ctx} :
+      HasCost R Γ Tm.true 0
 
-  /-- Conditional: b_c + max b_t b_f + 1 (Line 123-125) -/
-  | ite {c : Tm Γ .bool} {t f : Tm Γ A} :
-      HasBound Γ R b_c c .bool →
-      HasBound Γ R b_t t A →
-      HasBound Γ R b_f f A →
-      HasBound Γ R (b_c + Nat.max b_t b_f + 1) (Tm.ite c t f) A
+  | false {Γ : Ctx} :
+      HasCost R Γ Tm.false 0
+
+  /-- Conditional: kc + max kt kf + 1 (Line 123-125) -/
+  | ite {Γ : Ctx} {A : Ty} {c : Tm Γ .bool} {t f : Tm Γ A} {kc kt kf : Nat} :
+      HasCost R Γ c kc →
+      HasCost R Γ t kt →
+      HasCost R Γ f kf →
+      HasCost R Γ (Tm.ite c t f) (kc + Nat.max kt kf + 1)
+
+/-- Upper bound wrapper: term has some exact cost k ≤ b -/
+def HasBound (Γ : Ctx) (R : ResCtx) (b : Nat) {A : Ty} (t : Tm Γ A) : Prop :=
+  ∃ k, HasCost R Γ t k ∧ k ≤ b
 
 /-! ## Notation -/
 
-/-- Notation for the typing judgment -/
-notation:50 Γ " ⊢[" R ";" b "] " t " : " A => HasBound Γ R b t A
+set_option quotPrecheck false in
+/-- Notation for the typing judgment.
+Note: Type A is now implicit (inferred from Tm Γ A) -/
+scoped notation:50 Γ " ⊢[" R ";" b "] " t => HasBound Γ R b t
 
 /-! ## Basic Properties
 
@@ -170,43 +187,41 @@ section Examples
 def id_tm : Tm [] (.nat ⇒ .nat) :=
   Tm.lam (Tm.var Var.zero)
 
-/-- Identity has bound 0 -/
-example : [] ⊢[R;0] id_tm : (.nat ⇒ .nat) :=
-  HasBound.lam HasBound.var
+/-- Identity has exact cost 0, hence bound 0 -/
+example : [] ⊢[R;0] id_tm :=
+  ⟨0, HasCost.lam HasCost.var, Nat.le_refl 0⟩
 
 /-- Example: Constant function returning 42 -/
 def const42 : Tm [] (.nat ⇒ .nat) :=
   Tm.lam (Tm.natLit 42)
 
-/-- Constant function has bound 0 -/
-example : [] ⊢[R;0] const42 : (.nat ⇒ .nat) :=
-  HasBound.lam HasBound.natLit
+/-- Constant function has exact cost 0, hence bound 0 -/
+example : [] ⊢[R;0] const42 :=
+  ⟨0, HasCost.lam HasCost.natLit, Nat.le_refl 0⟩
 
 /-- Example: Application of id to 5 -/
 def app_id_5 : Tm [] .nat :=
   Tm.app id_tm (Tm.natLit 5)
 
-/-- Application has bound 1 (0 + 0 + 1) -/
-example : [] ⊢[R;1] app_id_5 : .nat :=
-  HasBound.app
-    (HasBound.lam HasBound.var)
-    HasBound.natLit
+/-- Application has exact cost 1 (0 + 0 + 1), hence bound 1 -/
+example : [] ⊢[R;1] app_id_5 :=
+  ⟨1, HasCost.app (HasCost.lam HasCost.var) HasCost.natLit, Nat.le_refl 1⟩
 
 /-- Example: Pair of booleans -/
 def pair_bools : Tm [] (.bool × .bool) :=
   Tm.pair Tm.true Tm.false
 
-/-- Pair has bound 0 (0 + 0) -/
-example : [] ⊢[R;0] pair_bools : (.bool × .bool) :=
-  HasBound.pair HasBound.true HasBound.false
+/-- Pair has exact cost 0 (0 + 0), hence bound 0 -/
+example : [] ⊢[R;0] pair_bools :=
+  ⟨0, HasCost.pair HasCost.true HasCost.false, Nat.le_refl 0⟩
 
 /-- Example: Conditional expression -/
 def cond_example : Tm [] .nat :=
   Tm.ite Tm.true (Tm.natLit 1) (Tm.natLit 2)
 
-/-- Conditional has bound 1 (0 + max 0 0 + 1) -/
-example : [] ⊢[R;1] cond_example : .nat :=
-  HasBound.ite HasBound.true HasBound.natLit HasBound.natLit
+/-- Conditional has exact cost 1 (0 + max 0 0 + 1), hence bound 1 -/
+example : [] ⊢[R;1] cond_example :=
+  ⟨1, HasCost.ite HasCost.true HasCost.natLit HasCost.natLit, Nat.le_refl 1⟩
 
 end Examples
 
