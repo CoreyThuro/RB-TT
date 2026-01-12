@@ -108,12 +108,13 @@ Open the folder in VS Code and let the Lean extension index the project.
 - `RB_TT.pdf` – main paper (the canonical specification of the theory).
 - `src/`
   - `RBTT/Res.lean` — resource contexts and basic operations
-  - `RBTT/Core.lean`, `RBTT/Core/STLC.lean` — syntax and typing
-  - `RBTT/Core/DependentTypes.lean` — MLTT dependent types (Π, Σ, Nat, Vec) **NEW**
-  - `RBTT/Core/DependentCost.lean` — cost semantics for dependent types **NEW**
+  - `RBTT/Core.lean`, `RBTT/Core/STLC.lean` — syntax and typing for STLC
   - `RBTT/Core/OpCost.lean` — small-step semantics and cost (with TODO theorems)
   - `RBTT/Core/Recursion.lean` — recursion patterns (partially proved, TODOs)
-  - `RBTT/Examples/BinarySearch.lean` — binary search implementation and theorem stubs
+  - `RBTT/Core/ExtrinsicMLTT.lean` — ✅ Full Martin-Löf Type Theory with TRUE dependent types
+  - `RBTT/Core/SubstitutionLemmas.lean` — 🔄 Phase 2 scaffolding: substitution correctness lemmas
+  - `RBTT/Examples/BinarySearch.lean` — binary search implementation (STLC)
+  - `RBTT/Examples/DependentTypeExamples.lean` — ✅ dependent type examples (MLTT)
   - `RBTT/Semantics/PresheafSet.lean` — presheaf semantics scaffold with `sorry`s
 - `docs/` – documentation assets and design documents
   - `rbtt-logo.svg` — project logo
