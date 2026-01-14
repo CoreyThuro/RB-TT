@@ -3,36 +3,6 @@ import RBTT.Core.STLC
 
 namespace RBTT.Extrinsic
 
-/-!
-# Extrinsic MLTT for RB-TT
-
-This module implements FULL Martin-Löf Type Theory using the **extrinsic typing** approach.
-
-## Why Extrinsic Typing?
-
-Lean 4 cannot support intrinsic dependent types (indexed families in mutual blocks).
-Instead, we use the standard workaround from type theory literature:
-
-1. **Raw untyped syntax** (`Expr`) - just AST nodes
-2. **Typing judgment** (`HasType Γ e A`) - separate relation proving well-typedness
-3. **Explicit substitution** - enables true dependency in result types
-
-## Key Advantages
-
-✅ **True dependent types**: `app` has type `B[a]` with real substitution
-✅ **Length-indexed vectors**: `Vec A n` where `n` is a term
-✅ **Dependent eliminators**: `natrec` with motive `P : Nat → Type`
-✅ **Full MLTT**: All features from mltt-sketch.txt
-
-## References
-
-- Standard approach from type theory literature
-- Suggested by colleague familiar with Lean 4 limitations
-- Contrasts with:
-  - `DependentTypes.lean` (intrinsic STLC-style, no true dependency)
-  - `TrueDependentTypes.lean` (attempted intrinsic, impossible in Lean 4)
--/
-
 set_option autoImplicit false
 
 /-! ## Raw Untyped Syntax
@@ -139,15 +109,6 @@ Extended context: `A :: Γ` binds var 0 to type A
 -/
 abbrev Ctx := List Expr
 
-/-! ## Substitution (The Hard Part)
-
-Capture-avoiding substitution is THE core operation for dependent types.
-This is where the complexity lives in the extrinsic approach.
-
-**✅ IMPLEMENTED**: Both `shift` and `subst` are now fully implemented with proper
-de Bruijn index handling and capture avoidance.
--/
-
 /-- **Shift**: Increment free variables ≥ cutoff by amount.
 
 Used to avoid variable capture during substitution.
@@ -241,13 +202,10 @@ def subst0 (s : Expr) (B : Expr) : Expr := subst 0 s B
 /-! ## Typing Judgment
 
 The core of extrinsic typing: `HasType Γ e A` means "in context Γ, expression e has type A".
-
-This is where we get TRUE dependent types - notice the substitution in `app`!
 -/
 
 /-- **Well-typed expressions**: `HasType Γ e A` means e : A in context Γ.
 
-This relation captures all of MLTT typing rules with real dependency.
 -/
 inductive HasType : Ctx → Expr → Expr → Prop where
   /-- Variable: nth variable has type from context -/
@@ -274,8 +232,6 @@ inductive HasType : Ctx → Expr → Expr → Prop where
 
   /-- Application with REAL substitution:
       If f : Π(x:A).B and a : A, then (f a) : B[a/x]
-
-      ✅ This is TRUE dependent typing!
   -/
   | app {Γ : Ctx} {f a A B : Expr} :
           HasType Γ f (.Pi A B) →
@@ -303,8 +259,6 @@ inductive HasType : Ctx → Expr → Expr → Prop where
 
   /-- Second projection with dependency:
       If p : Σ(x:A).B, then snd p : B[fst p/x]
-
-      ✅ True dependent pair!
   -/
   | snd {Γ : Ctx} {p A B : Expr} :
           HasType Γ p (.Sigma A B) →
@@ -330,8 +284,6 @@ inductive HasType : Ctx → Expr → Expr → Prop where
       - z : P zero
       - s : Π(k:Nat). P k → P (succ k)
       - n : Nat
-
-      ✅ Dependent eliminator!
   -/
   | natrec {Γ : Ctx} {P z s n : Expr} :
              HasType Γ P (.Pi .Nat .U) →
@@ -343,8 +295,6 @@ inductive HasType : Ctx → Expr → Expr → Prop where
   /-- Vector type formation with length index:
 
       Vec A n : U where A : U and n : Nat
-
-      ✅ Length-indexed vectors!
   -/
   | vec {Γ : Ctx} {A n : Expr} :
           HasType Γ A .U →
@@ -399,41 +349,5 @@ Convenient notation for typing judgments.
 /-- Typing judgment notation: `Γ ⊢ e : A` -/
 notation:50 Γ " ⊢ " e " : " A => HasType Γ e A
 
-/-! ## Status and Next Steps
-
-**✅ Phase 1 Complete**:
-- Raw untyped syntax (Expr) with all MLTT constructors
-- Typing judgment with TRUE dependent types
-- ✅ **NEW**: Fully implemented `shift` and `subst` functions (~150 lines)
-- HasType judgment uses real substitution in app/snd/pair rules
-
-**🔄 TODO - Phase 2** (Substitution Lemmas):
-1. Prove basic substitution lemmas:
-   - `shift 0 0 e = e`
-   - `shift c1 a1 (shift c2 a2 e)` composition
-   - `subst n e (var m)` properties
-   - Composition properties: `subst` after `shift`
-
-**🔄 TODO - Phase 3** (Operational Semantics):
-1. Add small-step reduction relation on Expr
-   - Beta reduction: `app (lam body) a ~> subst0 a body`
-   - Projections: `fst (pair a b) ~> a`, `snd (pair a b) ~> b`
-   - Natrec reduction rules
-2. Prove type safety (progress + preservation)
-
-**🔄 TODO - Phase 4** (RB-TT Integration):
-1. Add cost semantics: `HasCost Γ e A c` (typed term e has cost c)
-2. Prove cost soundness (typed cost bounds operational cost)
-3. Integrate resource lattice from RB-TT core
-
-**🔄 TODO - Phase 5** (Advanced Features):
-1. Implement vector recursion typing rule
-2. Add J-eliminator for identity types
-3. Examples: length-indexed vector operations, dependent pairs
-4. Proof assistants examples (dependent eliminators in action)
-
-**Key Achievement**: This is the CORRECT way to get full MLTT with TRUE dependent types in Lean 4!
-The extrinsic approach allows real B[a] substitution that was impossible with intrinsic typing.
--/
 
 end RBTT.Extrinsic

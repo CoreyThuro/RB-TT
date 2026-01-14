@@ -1,5 +1,5 @@
 import RBTT.Core
-import RBTT.Core.Recursion
+import RBTT.Experimental.RecursionFuel
 import RBTT.Infra.Cost
 
 namespace RBTT.Examples

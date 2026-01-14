@@ -2,8 +2,8 @@ import RBTT.Res
 import RBTT.Core.Modality
 import RBTT.Core.STLC
 import RBTT.Core.OpCost
-import RBTT.Core.Recursion
 import RBTT.Infra.Cost
+-- import RBTT.Experimental.RecursionFuel  -- Optional experimental recursion (not in paper)
 
 namespace RBTT
 

@@ -1,11 +1,18 @@
 import RBTT.Core.STLC
 
-namespace RBTT
+namespace RBTT.Experimental
 
 /-!
-# Recursion via Fuel and Depth Budgets
+# Recursion via Fuel and Depth Budgets (EXPERIMENTAL)
+
+**Status**: 🧪 Exploratory implementation - not referenced in paper
+**Location**: Moved from Core/ to Experimental/ (was src/RBTT/Core/Recursion.lean)
 
 This module implements safe recursion for RB-TT following paper §3.2, Lines 127-134.
+
+**Note**: This is experimental work exploring fuel-based recursion. The current
+RB-TT paper does not use this approach. This file is kept for reference and
+future exploration but should not be considered part of the core implementation.
 
 ## Key Components:
 
@@ -252,4 +259,4 @@ To fully integrate this with STLC.lean:
 This modular approach allows incremental integration without breaking existing code.
 -/
 
-end RBTT
+end RBTT.Experimental
