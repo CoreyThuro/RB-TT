@@ -2,7 +2,7 @@
 
 **Last Updated**: 2026-01-14
 **Total Sorry Count**: 30
-**Total Axiom Count**: 37
+**Total Axiom Count**: 33
 
 This document tracks all incomplete proofs (`sorry`) and assumed axioms in the RB-TT codebase.
 
@@ -12,7 +12,7 @@ This document tracks all incomplete proofs (`sorry`) and assumed axioms in the R
 
 | File | Sorry | Axiom | Status | Priority |
 |------|-------|-------|--------|----------|
-| [SubstitutionLemmas.lean](#substitutionlemmaslean) | 9 | 0 | Scaffolding | P1 - High |
+| [SubstitutionLemmas.lean](#substitutionlemmaslean) | 10 | 0 | Scaffolding | P1 - High |
 | [OpCost.lean](#opcostlean) | 8 | 18 | Partial | P1 - High |
 | [PresheafSet.lean](#presheafsetlean) | 6 | 5 | Experimental | P2 - Medium |
 | [Recursion.lean](#recursionlean) | 3 | 4 | Experimental | P3 - Low |
@@ -31,7 +31,7 @@ This document tracks all incomplete proofs (`sorry`) and assumed axioms in the R
 **Status**: 🔄 Phase 2 scaffolding - all proofs stubbed with `sorry`
 **Priority**: P1 - Required for type safety proofs
 
-#### Incomplete Proofs (9 sorry)
+#### Incomplete Proofs (10 sorry)
 
 1. **shift_zero** (line ~43)
    - **Claim**: `shift c 0 e = e` - shifting by 0 is identity

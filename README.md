@@ -5,7 +5,7 @@
 Resource-Bounded Type Theory (RB-TT) is a small typed λ-calculus for **compositional cost analysis**.
 
 Terms are typed with synthesized bounds drawn from an abstract **resource lattice**  
-\((L, \preceq, \oplus, ot)\), and a graded **feasibility modality** □ᵣ tracks which programs are
+\((L, \preceq, \oplus, ⊥)\), and a graded **feasibility modality** □ᵣ tracks which programs are
 admissible under a given resource budget.
 
 The mathematical development is described in the companion paper `RBTT.pdf`.  
@@ -32,7 +32,7 @@ The main metatheorems are currently **stated but not yet fully proved** in Lean.
   - Status and roadmap: [MLTT_STATUS.md](MLTT_STATUS.md)
 - ✅ **Example programs**
   - Fuel-based binary search and other small examples
-  - Dependent type examples with verified cost bounds
+  - Dependent type examples demonstrating MLTT features
 - 🟡 **Theorem statements (work in progress)**
   - Type soundness (progress + preservation)
   - Cost soundness ("typed bound ≥ operational cost")
@@ -67,7 +67,7 @@ See [MLTT_STATUS.md](MLTT_STATUS.md) and [ExtrinsicMLTT.lean](src/RBTT/Core/Extr
 
 - **Abstract resource lattice**  
   Treat time, steps, gas, memory, or domain-specific quantities uniformly via  
-  \((L, \preceq, \oplus, ot)\).
+  \((L, \preceq, \oplus, ⊥)\).
 
 - **Graded feasibility modality `□ᵣ`**  
   Express that a computation is feasible under budget `r`, with counit and
