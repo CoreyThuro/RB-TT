@@ -758,14 +758,15 @@ theorem shift_shift_gt_safe (c1 c2 d1 d2 : Nat) (e : Expr)
       intro c1 c2 d1 d2 h hc
       simp [shift, iht _ _ _ _ h hc]
 
-/-- Substitution commutes with shift (when safe).
+/-- Substitution commutes with shift once the cutoff is below the substituted index.
 
-When substituting after shifting, we can reorder the operations if we adjust indices.
--/
+This is just the symmetric direction of `shift_subst`. -/
 theorem subst_shift (n c d : Nat) (s e : Expr)
-    (h : n >= c) :
-    subst n s (shift c d e) = shift c d (subst (n - d) s e) := by
-  sorry
+    (h : c ≤ n) :
+    subst (n + d) (shift c d s) (shift c d e) =
+    shift c d (subst n s e) := by
+  simpa using
+    (shift_subst (n := n) (c := c) (d := d) (s := s) (e := e) h).symm
 
 /-- Shift commutes with substitution (when safe).
 
