@@ -1,0 +1,49 @@
+name: Resource Budget Check
+
+# Based on paper §6 (lines 219-231): CI automation for budget enforcement
+# Validates that all tracked proofs stay within their resource budgets
+# Fails the build if any budget regressions are detected
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  budget-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Lean
+      uses: leanprover/lean-action@v1
+      with:
+        lean-version: '4.8.0'  # Adjust to match project version
+
+    - name: Build project
+      run: lake build
+
+    - name: Check Resource Budgets
+      id: check-budgets
+      continue-on-error: true
+      run: lake exe check-budgets --verbose
+
+    - name: Report status
+      if: always()
+      run: |
+        EXIT_CODE=${{ steps.check-budgets.outcome }}
+
+        if [ "$EXIT_CODE" = "success" ]; then
+          echo "✅ All proofs within budget"
+          exit 0
+        elif [ "$EXIT_CODE" = "failure" ]; then
+          echo "❌ Budget regressions detected!"
+          echo "Review budget changes or update baselines in Infra/BudgetRecords.lean"
+          exit 1
+        else
+          echo "⚠️  Check-budgets step had unexpected outcome: $EXIT_CODE"
+          exit 1
+        fi

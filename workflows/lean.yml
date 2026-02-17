@@ -1,0 +1,19 @@
+name: Lean CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up elan + Lean
+        uses: leanprover/lean-action@v1
+        with:
+          toolchain: leanprover/lean4:4.8.0
+      - name: Build
+        run: lake build
+      - name: Run demo exe
+        run: lake exe rbtt

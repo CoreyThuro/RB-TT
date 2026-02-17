@@ -1,0 +1,7 @@
+Choose a license before publishing this repository.
+Suggested options:
+  - MIT (permissive)
+  - Apache-2.0 (permissive with patent grant)
+  - BUSL-1.1 (source-available, business)
+  - Proprietary (all rights reserved)
+Replace this file with your chosen LICENSE.
