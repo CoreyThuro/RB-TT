@@ -77,7 +77,7 @@ lemma ctxwf_head {A : Expr} {Γ : Ctx} :
     CtxWF (A :: Γ) → noVar 0 A :=
   And.left
 
-lemma ctxwf_tail {A : Expr} {Γ : Ctx} :
+lemma ctxwf_tail_shift {A : Expr} {Γ : Ctx} :
     CtxWF (A :: Γ) → CtxWF (Γ.map (shift 0 1)) :=
   And.right
 
@@ -190,7 +190,7 @@ lemma ctxwf_map_shift :
       ctxwf_nil
   | A :: Γ, h =>
       have hhead : noVar 0 A := ctxwf_head h
-      have htail : CtxWF (Γ.map (shift 0 1)) := ctxwf_tail h
+      have htail : CtxWF (Γ.map (shift 0 1)) := ctxwf_tail_shift h
       have ih := ctxwf_map_shift htail
       refine And.intro ?_ ?_
       · simpa [List.map] using noVar_shift_cutoff 0 A hhead
