@@ -1,3 +1,4 @@
+-- STATUS: infrastructure — proof cost measurement
     import Lean
     open Lean Meta Elab Command
 

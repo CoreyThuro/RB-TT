@@ -1,3 +1,4 @@
+-- STATUS: semantic scaffold — contains axioms
 import RBTT.Res
 import RBTT.Core.Modality
 
@@ -168,7 +169,7 @@ theorem le_add_right (S R : ResCtx) : S ≤ S ⊕ R := by
   constructor
   · exact Nat.le_add_right S.time R.time
   constructor
-  · exact Nat.le_add_right S.memory R.memory
+  · exact Nat.le_max_left S.memory R.memory
   · exact Nat.le_max_left S.depth R.depth
 
 /-- **Shift Functor**: The presheaf interpretation of `□_R`.
@@ -241,9 +242,10 @@ theorem add_mono_right {R S : ResCtx} (T : ResCtx) (h : R ≤ S) : (T ⊕ R) ≤
   constructor
   · exact Nat.add_le_add (Nat.le_refl T.time) h.1
   constructor
-  · exact Nat.add_le_add (Nat.le_refl T.memory) h.2.1
-  · -- max monotonicity (deferred)
-    sorry
+  · -- memory: max T.memory R.memory ≤ max T.memory S.memory
+    exact RBTT.max_le_max_of_le_right h.2.1
+  · -- depth: max T.depth R.depth ≤ max T.depth S.depth
+    exact RBTT.max_le_max_of_le_right h.2.2
 
 /-- **Monotonicity (weakening)**: If `R ≤ S`, then `□_R A → □_S A`.
 

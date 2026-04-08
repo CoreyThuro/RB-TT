@@ -1,3 +1,4 @@
+-- STATUS: semantic scaffold — extrinsic typing rules only
 import RBTT.Res
 import RBTT.Core.STLC
 

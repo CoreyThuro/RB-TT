@@ -1,3 +1,4 @@
+-- STATUS: example
 import RBTT.Core.ExtrinsicMLTT
 
 namespace RBTT.Extrinsic.Examples

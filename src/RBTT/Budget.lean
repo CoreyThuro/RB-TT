@@ -1,3 +1,4 @@
+-- STATUS: infrastructure — budget management utilities (1 sorry: integer division rounding)
 import RBTT.Res
 import RBTT.Core.Modality
 

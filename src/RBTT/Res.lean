@@ -1,6 +1,8 @@
+-- STATUS: mechanized core
 namespace RBTT
 
-/-- A minimal resource context with simple, additive budgets. -/
+/-- A minimal resource context (resource algebra instance).
+    Time is cumulative (⊕ = +), memory and depth are peak (⊕ = max). -/
 structure ResCtx where
   time   : Nat
   memory : Nat
@@ -35,66 +37,43 @@ theorem le_trans {R S T : ResCtx} : R ≤ S → S ≤ T → R ≤ T := by
 instance : Trans (α := ResCtx) (· ≤ ·) (· ≤ ·) (· ≤ ·) where
   trans := le_trans
 
-/-- A simple composition of resources (sequential composition).
-    Time and memory add; depth takes the maximum. -/
+/-- Sequential composition of resources (resource algebra ⊕).
+    Time adds (cumulative); memory takes max (peak); depth takes max.
+    This mixed composition matches the paper's recommended design:
+    additive for cumulative resources, max for peak resources.
+    The double b_f in the App rule causes no overcount for max-dimensions. -/
 def ResCtx.add (R S : ResCtx) : ResCtx :=
   { time := R.time + S.time
-  , memory := R.memory + S.memory
+  , memory := Nat.max R.memory S.memory
   , depth := Nat.max R.depth S.depth }
 
 infixl:65 " ⊕ " => ResCtx.add
 
 -- monotonicity
+theorem max_le_max_of_le_left {a b c : Nat} (h : a ≤ b) :
+    Nat.max a c ≤ Nat.max b c := by
+  simp only [Nat.max_def]
+  split <;> split <;> omega
+
+theorem max_le_max_of_le_right {a b c : Nat} (h : b ≤ c) :
+    Nat.max a b ≤ Nat.max a c := by
+  simp only [Nat.max_def]
+  split <;> split <;> omega
+
 @[simp] theorem add_mono_left {R R' S : ResCtx} : R ≤ R' → (R ⊕ S) ≤ (R' ⊕ S) := by
   intro h
-  constructor
-  · exact Nat.add_le_add h.1 (Nat.le_refl S.time)
-  constructor
-  · exact Nat.add_le_add h.2.1 (Nat.le_refl S.memory)
-  · -- Need: (R ⊕ S).depth ≤ (R' ⊕ S).depth
-    -- which is: max R.depth S.depth ≤ max R'.depth S.depth
-    by_cases hc : R.depth ≤ S.depth
-    · -- When R.depth ≤ S.depth: max becomes S.depth on both sides
-      calc (R ⊕ S).depth
-          = Nat.max R.depth S.depth := rfl
-        _ = S.depth := Nat.max_eq_right hc
-        _ ≤ Nat.max R'.depth S.depth := Nat.le_max_right _ _
-        _ = (R' ⊕ S).depth := rfl
-    · -- When R.depth > S.depth: max becomes R.depth and R'.depth
-      have hlt : S.depth < R.depth := Nat.not_le.mp hc
-      calc (R ⊕ S).depth
-          = Nat.max R.depth S.depth := rfl
-        _ = R.depth := Nat.max_eq_left (Nat.le_of_lt hlt)
-        _ ≤ R'.depth := h.2.2
-        _ ≤ Nat.max R'.depth S.depth := Nat.le_max_left _ _
-        _ = (R' ⊕ S).depth := rfl
+  refine ⟨Nat.add_le_add h.1 (Nat.le_refl S.time), ?_, ?_⟩
+  · exact max_le_max_of_le_left h.2.1
+  · exact max_le_max_of_le_left h.2.2
 
 @[simp] theorem add_mono_right {R S S' : ResCtx} : S ≤ S' → (R ⊕ S) ≤ (R ⊕ S') := by
   intro h
-  constructor
-  · exact Nat.add_le_add (Nat.le_refl R.time) h.1
-  constructor
-  · exact Nat.add_le_add (Nat.le_refl R.memory) h.2.1
-  · -- Need: (R ⊕ S).depth ≤ (R ⊕ S').depth
-    -- which is: max R.depth S.depth ≤ max R.depth S'.depth
-    by_cases hc : S.depth ≤ R.depth
-    · -- When S.depth ≤ R.depth: max becomes R.depth on both sides
-      calc (R ⊕ S).depth
-          = Nat.max R.depth S.depth := rfl
-        _ = R.depth := Nat.max_eq_left hc
-        _ ≤ Nat.max R.depth S'.depth := Nat.le_max_left _ _
-        _ = (R ⊕ S').depth := rfl
-    · -- When S.depth > R.depth: max becomes S.depth and S'.depth
-      have hlt : R.depth < S.depth := Nat.not_le.mp hc
-      calc (R ⊕ S).depth
-          = Nat.max R.depth S.depth := rfl
-        _ = S.depth := Nat.max_eq_right (Nat.le_of_lt hlt)
-        _ ≤ S'.depth := h.2.2
-        _ ≤ Nat.max R.depth S'.depth := Nat.le_max_right _ _
-        _ = (R ⊕ S').depth := rfl
+  refine ⟨Nat.add_le_add (Nat.le_refl R.time) h.1, ?_, ?_⟩
+  · exact max_le_max_of_le_right h.2.1
+  · exact max_le_max_of_le_right h.2.2
 
 @[simp] theorem add_time   (R S : ResCtx) : (R ⊕ S).time   = R.time + S.time := rfl
-@[simp] theorem add_memory (R S : ResCtx) : (R ⊕ S).memory = R.memory + S.memory := rfl
+@[simp] theorem add_memory (R S : ResCtx) : (R ⊕ S).memory = Nat.max R.memory S.memory := rfl
 @[simp] theorem add_depth  (R S : ResCtx) : (R ⊕ S).depth  = Nat.max R.depth S.depth := rfl
 
 /-! ## Monoid Laws

@@ -1,3 +1,4 @@
+-- STATUS: semantic scaffold — contains axioms
 import RBTT.Res
 
 namespace RBTT

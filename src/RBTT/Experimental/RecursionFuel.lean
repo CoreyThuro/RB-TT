@@ -1,3 +1,4 @@
+-- STATUS: experimental — contains sorry and axiom
 import RBTT.Core.STLC
 
 namespace RBTT.Experimental
@@ -249,7 +250,7 @@ To fully integrate this with STLC.lean:
        HasBound Γ R (Depth(R) * b) (Tm.fix t) (A ⇒ B)
    ```
 
-3. **Extend operational semantics** in OpCost.lean with:
+3. **Extend operational semantics** (e.g., in a new operational cost file) with:
    - Unfolding rule for fix
    - Cost tracking for recursive calls
    - Fuel consumption in evaluation
