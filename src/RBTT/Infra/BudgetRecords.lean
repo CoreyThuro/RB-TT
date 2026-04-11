@@ -1,3 +1,4 @@
+-- STATUS: infrastructure — budget baselines
 import Lean
 import RBTT.Res
 import RBTT.Infra.BudgetDB

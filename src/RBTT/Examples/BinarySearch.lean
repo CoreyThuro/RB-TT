@@ -1,3 +1,4 @@
+-- STATUS: example — contains sorry
 import RBTT.Core
 import RBTT.Experimental.RecursionFuel
 import RBTT.Infra.Cost

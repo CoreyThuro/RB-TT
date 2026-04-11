@@ -1,3 +1,4 @@
+-- STATUS: infrastructure — budget persistence
 import Lean
 import RBTT.Res
 import RBTT.Infra.Cost

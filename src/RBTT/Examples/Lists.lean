@@ -1,3 +1,4 @@
+-- STATUS: example
 import RBTT.Core
 
 namespace RBTT.Examples
@@ -141,10 +142,10 @@ noncomputable def list_reverse_boxed {α : Type} (xs : List α) (R : ResCtx)
     If xs is feasible at budget R₁ and ys is feasible at budget R₂,
     then (xs ++ ys) is feasible at the combined budget (R₁ ⊕ R₂).
 
-    This uses the monoid structure of ResCtx:
-    - Time: R₁.time + R₂.time (additive)
-    - Memory: R₁.memory + R₂.memory (additive)
-    - Depth: max(R₁.depth, R₂.depth) (maximum)
+    This uses the resource algebra structure of ResCtx:
+    - Time: R₁.time + R₂.time (additive / cumulative)
+    - Memory: max(R₁.memory, R₂.memory) (peak)
+    - Depth: max(R₁.depth, R₂.depth) (peak)
 -/
 theorem append_cost_compositional {α : Type} (xs ys : List α)
     (R₁ R₂ : ResCtx)

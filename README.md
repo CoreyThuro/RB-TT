@@ -1,180 +1,152 @@
-# RB-TT — Resource-Bounded Type Theory
+# RB-TT --- Resource-Bounded Type Theory
 
 ![RB-TT logo](docs/rbtt-logo.png)
 
-Resource-Bounded Type Theory (RB-TT) is a small typed λ-calculus for **compositional cost analysis**.
+Resource-Bounded Type Theory (RB-TT) is a typed lambda-calculus for **compositional cost analysis**.
 
-Terms are typed with synthesized bounds drawn from an abstract **resource lattice**  
-\((L, \preceq, \oplus, ⊥)\), and a graded **feasibility modality** □ᵣ tracks which programs are
-admissible under a given resource budget.
+Terms carry synthesized cost bounds drawn from an abstract **resource lattice**
+\((L, \preceq, \oplus, \bot)\), and a graded **feasibility modality** \(\Box_r\) tracks which
+programs are admissible under a given resource budget.
 
-The mathematical development is described in the companion paper `RBTT.pdf`.  
-This repository contains the **Lean 4 implementation of the core syntax, typing,
-and cost infrastructure**, plus **example programs** (e.g. binary search).  
-The main metatheorems are currently **stated but not yet fully proved** in Lean.
+Two companion papers describe the mathematical development:
+- **RB-TT** (STLC fragment): syntax, cost rules, machine semantics, cost soundness.
+- **RB-MLTT**: extension to Martin-Lof dependent types, presheaf semantics, universe structure.
 
----
+This repository contains the **Lean 4 mechanization** of the STLC core and scaffolds
+for the dependent/semantic extensions.
 
-## What's in this repo (current status)
-
-- ✅ **Core calculus definitions**
-  - Resource contexts (`ResCtx`) and lattice structure
-  - Types, terms, and typing judgment `Γ ⊢[R;b] t : A`
-- ✅ **Operational cost infrastructure**
-  - Small-step semantics with step counting
-  - Multi-step evaluation with accumulated cost
-- ✅ **MLTT Extension (NEW - Phase 1 Complete)**
-  - Full Martin-Löf Type Theory with TRUE dependent types
-  - Extrinsic typing approach: Π, Σ, Nat, Vec, Bool, Id types
-  - Complete capture-avoiding substitution (shift, subst)
-  - See [ExtrinsicMLTT.lean](src/RBTT/Core/ExtrinsicMLTT.lean) and [examples](src/RBTT/Examples/DependentTypeExamples.lean)
-  - Phase 2 scaffolding: [SubstitutionLemmas.lean](src/RBTT/Core/SubstitutionLemmas.lean)
-  - Status and roadmap: [MLTT_STATUS.md](MLTT_STATUS.md)
-- ✅ **Example programs**
-  - Fuel-based binary search and other small examples
-  - Dependent type examples demonstrating MLTT features
-- 🟡 **Theorem statements (work in progress)**
-  - Type soundness (progress + preservation)
-  - Cost soundness ("typed bound ≥ operational cost")
-  - Recursive bounds and binary search complexity
-- 🟡 **Presheaf-style semantics scaffolding**
-  - Basic presheaf and natural transformation definitions in Lean
-  - Proof obligations and laws are marked with `sorry` and TODO
-
-> **Implementation Status**: Definitions and type system are implemented. Many metatheorem proofs
-> are axioms or `sorry` stubs (tracked in [PROOF_DEBT.md](docs/PROOF_DEBT.md)). See status sections below.
-
-### 🎉 Recent Progress: MLTT Implementation (2026-01-10)
-
-RB-TT has been extended with **full Martin-Löf Type Theory (MLTT)** featuring TRUE dependent types:
-
-- **Type Constructors**: Π-types, Σ-types, Nat, Vec, Bool, Id (with real dependency)
-- **Extrinsic Typing**: `HasType Γ e A` judgment with capture-avoiding substitution
-- **TRUE Dependency**: Application returns `B[a]`, not just `B` - real substitution in types
-- **Eliminators**: `natrec` for natural numbers with dependent motives
-- **Working Examples**: Length-indexed vectors, dependent pairs, type families
-
-**Phase 1 Complete**: Full MLTT syntax and typing with substitution (~630 lines)
-**Phase 2 Scaffolding**: Substitution lemmas declared, proofs in progress
-
-See [MLTT_STATUS.md](MLTT_STATUS.md) and [ExtrinsicMLTT.lean](src/RBTT/Core/ExtrinsicMLTT.lean) for complete details.
-
-**Note**: RB-TT cost integration (Phase 4) is planned but not yet implemented.
+> **Scope warning.** This repo is **not** a full mechanization of RB-MLTT.
+> It contains a proved STLC machine core (9/10 cost soundness cases; App
+> higher-order case has one `sorry`), extrinsic MLTT typing rules (scaffold),
+> presheaf semantics (scaffold with axioms), and engineering examples.
+> No MLTT-level metatheory (preservation, cost soundness for dependent fragment)
+> is mechanized here — those exist only as paper-level proofs.
 
 ---
 
-## Features (mathematical side — see the paper)
+## Proof status
 
-- **Abstract resource lattice**  
-  Treat time, steps, gas, memory, or domain-specific quantities uniformly via  
-  \((L, \preceq, \oplus, ⊥)\).
+| Component | Lean status | File(s) | Detail |
+| --- | --- | --- | --- |
+| Resource algebra | **Lean proved** | `Res.lean` | Lattice, ordering, composition |
+| Delta constants | **Lean proved** | `Core/CostModel.lean` | Single source of truth |
+| STLC syntax + cost typing | **Lean proved** | `Core/STLC.lean` | `HasCost`, `HasBound`, `costOf` |
+| Closure machine semantics | **Lean proved** | `Core/STLCMachine.lean` | `Val`, `Env`, `Eval` |
+| Cost soundness: non-App cases | **Lean proved** | `Meta/STLCMachineSoundness.lean` | 9/10 cases |
+| Cost soundness: App (direct-lambda) | **Lean proved** (no separate closed theorem) | `Meta/STLCMachineSoundness.lean` | Informally documented |
+| Cost soundness: App (general higher-order) | **Open** | `Meta/STLCMachineSoundness.lean` | 1 sorry — needs `kbody <= kf` |
+| Extrinsic MLTT typing rules | Scaffold / axiomatized | `Core/ExtrinsicMLTT.lean` | Syntax + rules, no metatheory |
+| Presheaf semantics | Scaffold / axiomatized | `Semantics/PresheafSet.lean` | 4 sorry, 5 axioms |
+| Resource-indexed universes | Scaffold / axiomatized | `Core/Universe.lean` | 3 axioms |
+| Feasibility modality | Scaffold / axiomatized | `Core/Modality.lean` | 1 axiom (cost-aware box intro) |
+| Budget infrastructure | Experimental | `Budget.lean`, `Infra/` | CI budget tracking (1 sorry in Budget.lean) |
+| Examples | Experimental | `Examples/` | Some contain sorry |
+| Experimental recursion | Experimental | `Experimental/RecursionFuel.lean` | 3 sorry, 1 axiom |
 
-- **Graded feasibility modality `□ᵣ`**  
-  Express that a computation is feasible under budget `r`, with counit and
-  monotonicity laws.
+### The higher-order cost gap
 
-- **Compositional cost bounds**  
-  Typing rules synthesize bounds `b` for terms; application, pairing, conditionals,
-  etc. combine bounds via `⊕` and lattice joins.
+The single `sorry` in the mechanized core is the **App cost bound**. The App
+rule uses the "double b_f" pattern: `kf + ka + kf + delta_app`. The second `kf`
+is intended to upper-bound the closure body cost `kbody`.
 
-- **Syntactic and semantic soundness (on paper)**  
-  The paper proves type soundness, cost soundness, and a presheaf model in `Set^L`.
-  These theorems are currently **not fully mechanized** in Lean.
+- **When `f = Tm.lam body`**: `kf = kbody + delta_lam`, so `kbody < kf`. Sound.
+- **When `f = Tm.var x`**: `kf = delta_var = 1`, but `kbody` can be arbitrary. Gap.
+
+**Resolution**: cost-annotated arrow types `A -{k}-> B`, where the body cost
+bound `k` is carried in the type. This is standard (Crary--Weirich 2000,
+RAML/Hoffmann et al. 2012) and is adopted in the companion RB-MLTT paper for
+annotated dependent function types. The STLC paper diagnoses the obstruction;
+the RB-MLTT paper proposes the annotated-arrow resolution at the paper level (the Lean repo does not yet mechanize that resolution).
+
+### What the STLC mechanization proves
+
+The STLC core is **not** the final architecture. It is:
+- A minimal compositional resource calculus
+- The place where the closure-cost problem becomes visible
+- A useful proved fragment (all first-order / direct-lambda programs)
+- Not the final higher-order theory
+
+This is a deliberately staged research program: STLC exposes the latent-cost
+obstruction; the MLTT paper proposes annotated dependent arrows as the resolution (paper-level; not yet mechanized in this repo).
 
 ---
 
-## Getting started (Lean)
+## Repository structure
+
+Every Lean file carries a `-- STATUS:` header on its first line.
+
+### Layer 1: Mechanized core (proved)
+
+| File | Content |
+| --- | --- |
+| `src/RBTT/Res.lean` | Resource contexts and lattice |
+| `src/RBTT/Core/CostModel.lean` | Delta overhead constants |
+| `src/RBTT/Core/STLC.lean` | Types, terms, `HasCost`, `costOf` |
+| `src/RBTT/Core/STLCMachine.lean` | `Val`, `Env`, `Eval` (closure machine) |
+| `src/RBTT/Meta/STLCMachineSoundness.lean` | Cost soundness (9/10 cases; App open) |
+
+### Layer 2: Forward theory scaffolds
+
+| File | Content | Status |
+| --- | --- | --- |
+| `src/RBTT/Core/ExtrinsicMLTT.lean` | Pi, Sigma, Nat, Vec, Bool, Id | Typing rules only |
+| `src/RBTT/Semantics/PresheafSet.lean` | Presheaves over `(ResCtx, <=)` | Axioms + sorry |
+| `src/RBTT/Core/Universe.lean` | Resource-indexed universes | Axioms |
+| `src/RBTT/Core/Modality.lean` | Feasibility modality | 1 axiom |
+| `src/RBTT/Experimental/RecursionFuel.lean` | Fuel-based recursion | Experimental |
+
+### Infrastructure and examples
+
+| File | Content |
+| --- | --- |
+| `src/RBTT/Budget.lean` | Budget allocation strategies |
+| `src/RBTT/Infra/` | Proof cost measurement, budget DB, baselines |
+| `src/RBTT/Examples/` | Binary search, lists, cost integration, dependent types |
+| `src/Main.lean` | Demo executable |
+
+### Paper-to-code map
+
+| Paper section | Lean file(s) | Mechanization level |
+| --- | --- | --- |
+| Resource lattice + contexts | `src/RBTT/Res.lean` | **proved** |
+| Syntax + typing | `src/RBTT/Core/STLC.lean` | **proved** |
+| Delta overhead constants | `src/RBTT/Core/CostModel.lean` | **proved** |
+| Machine semantics (closures) | `src/RBTT/Core/STLCMachine.lean` | **proved** |
+| Cost soundness (Thm 6.X) | `src/RBTT/Meta/STLCMachineSoundness.lean` | **9/10 cases; App has sorry** |
+| MLTT typing rules | `src/RBTT/Core/ExtrinsicMLTT.lean` | scaffold (syntax + rules only) |
+| Feasibility modality | `src/RBTT/Core/Modality.lean` | scaffold (1 axiom) |
+| Presheaf model | `src/RBTT/Semantics/PresheafSet.lean` | scaffold (4 sorry, 5 axioms) |
+
+---
+
+## Getting started
 
 ### Prerequisites
 
-- [Lean 4](https://leanprover.github.io/) (matching the version in `lean-toolchain`)
-- Lake (Lean’s build tool, included with recent Lean 4 installs)
-- A recent `git`
+- [Lean 4](https://leanprover.github.io/) (version in `lean-toolchain`: 4.8.0)
+- Lake (included with Lean 4)
 
-Optional but recommended:
-
-- VS Code + Lean 4 extension.
-
-### Clone and build
+### Build
 
 ```bash
 git clone https://github.com/CoreyThuro/RB-TT.git
 cd RB-TT
-
-# Fetch dependencies and build
 lake build
 ```
 
-Open the folder in VS Code and let the Lean extension index the project.
+### Run demo
 
----
-
-## Repository layout
-
-- `RBTT.pdf` – main paper (the canonical specification of the theory).
-- `src/`
-  - `RBTT/Res.lean` — resource contexts and basic operations
-  - `RBTT/Core.lean`, `RBTT/Core/STLC.lean` — syntax and typing for STLC
-  - `RBTT/Core/OpCost.lean` — small-step semantics and cost (with TODO theorems)
-  - `RBTT/Core/ExtrinsicMLTT.lean` — ✅ Full Martin-Löf Type Theory with TRUE dependent types
-  - `RBTT/Core/SubstitutionLemmas.lean` — 🔄 Phase 2 scaffolding: substitution correctness lemmas
-  - `RBTT/Examples/BinarySearch.lean` — binary search implementation (STLC)
-  - `RBTT/Examples/DependentTypeExamples.lean` — ✅ dependent type examples (MLTT)
-  - `RBTT/Experimental/RecursionFuel.lean` — 🧪 fuel-based recursion (exploratory, not in paper)
-  - `RBTT/Semantics/PresheafSet.lean` — presheaf semantics scaffold with `sorry`s
-- `docs/` – documentation assets and status tracking
-  - `rbtt-logo.svg` — project logo
-  - `PROOF_DEBT.md` — tracking all `sorry` and `axiom` instances with proof plans
-  - `MLTT_STATUS.md` — MLTT implementation status and roadmap
-  - `DEPENDENT_TYPES_GUIDE.md` — user guide for dependent types
-  - `MLTT_IMPLEMENTATION_COMPLETE.md` — technical details of MLTT implementation
-  - `_archive/` — historical design documents (superseded)
-- `.github/` – CI config (budget checks, etc.).
-- `lakefile.lean`, `lake-manifest.json`, `lean-toolchain` – Lake / Lean project files.
-
----
-
-## Using RB-TT as a Lean dependency
-
-If you want to experiment with RB-TT inside another Lean 4 project:
-
-1. Add this repository as a Lake dependency in your `lakefile.lean`:
-
-   ```lean
-   package myproj
-
-   require rbt t from git
-     "https://github.com/CoreyThuro/RB-TT.git"
-   ```
-
-2. Run:
-
-   ```bash
-   lake update
-   lake build
-   ```
-
-3. Import the relevant modules, e.g.
-
-   ```lean
-   import RBTT.Core         -- syntax + typing
-   import RBTT.Core.OpCost  -- cost semantics (with TODO theorems)
-   ```
+```bash
+lake exe rbtt
+```
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License**.  
-Please see the `LICENSE` file for the full text.
-
----
+MIT License. See `LICENSE`.
 
 ## Citing
 
-If you use RB-TT in research, please cite the accompanying paper:
-
-> Mirco A. Mannucci, Corey Thuro. *Resource-Bounded Type Theory:  
-> Compositional Cost Analysis via Graded Modalities*, 2025.  
-> (See `RBTT.pdf` in this repository.)
-
+> Mirco A. Mannucci, Corey Thuro. *Resource-Bounded Type Theory:
+> Compositional Cost Analysis via Graded Modalities*, 2025.

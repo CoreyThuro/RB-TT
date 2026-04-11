@@ -1,3 +1,4 @@
+-- STATUS: semantic scaffold — contains axiom
 import RBTT.Res
 import RBTT.Infra.Cost
 

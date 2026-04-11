@@ -1,3 +1,4 @@
+-- STATUS: example
 import RBTT.Core
 import RBTT.Examples.Lists
 
@@ -181,12 +182,12 @@ theorem test_depth_tracking :
   -- max(3, 5) = 5 by computation
   rfl
 
-/-- Test that memory is tracked additively. -/
+/-- Test that memory is tracked as peak (max). -/
 theorem test_memory_tracking :
     let R₁ : ResCtx := { time := 10, memory := 20, depth := 1 }
     let R₂ : ResCtx := { time := 15, memory := 25, depth := 2 }
-    (R₁ ⊕ R₂).memory = 45 :=
-  -- 20 + 25 = 45 by computation
+    (R₁ ⊕ R₂).memory = 25 :=
+  -- max(20, 25) = 25 by computation
   rfl
 
 

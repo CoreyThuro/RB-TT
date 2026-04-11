@@ -1,9 +1,10 @@
+-- STATUS: infrastructure — demo executable
 import RBTT.Core
 open RBTT
 
 /-- Simple demonstration of RB-TT resource-bounded computation -/
 def main : IO Unit := do
-  IO.println "RB-TT: Resource-Bounded Homotopy Type Theory"
+  IO.println "RB-TT: Resource-Bounded Type Theory"
   IO.println "==============================================="
   IO.println ""
 
