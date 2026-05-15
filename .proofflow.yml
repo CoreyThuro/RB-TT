@@ -1,0 +1,8 @@
+seniorContributors:
+  - coreythuro
+rfcAbandonDays: 14
+aiClaimable: false
+rfcRequiredThreshold:
+  newFiles: true
+  minLines: 50
+  newDefinitions: true
