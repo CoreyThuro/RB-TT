@@ -1,8 +1,8 @@
-seniorContributors:
-  - coreythuro
-rfcAbandonDays: 14
-aiClaimable: false
-rfcRequiredThreshold:
-  newFiles: true
-  minLines: 50
-  newDefinitions: true
+senior_contributors:
+  - CoreyThuro
+rfc_abandon_days: 14
+ai_claimable: false
+rfc_required_threshold:
+  new_files: true
+  min_lines: 50
+  new_definitions: true
