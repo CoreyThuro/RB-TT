@@ -8,4 +8,5 @@ theorem sum_odd_eq_sq : ∀ n : ℕ, ∑ i in Finset.range n, (2 * i + 1) = n ^ 
   | zero => simp
   | succ n ih =>
     rw [Finset.sum_range_succ, ih]
+    push_cast
     ring
