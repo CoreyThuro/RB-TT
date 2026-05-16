@@ -6,3 +6,7 @@ rfc_required_threshold:
   new_files: true
   min_lines: 50
   new_definitions: true
+ai_agent:
+  enabled: true
+  cost_model: maintainer
+  max_iterations: 3
