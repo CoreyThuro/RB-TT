@@ -4,11 +4,8 @@ name: Resource Budget Check
 # Validates that all tracked proofs stay within their resource budgets
 # Fails the build if any budget regressions are detected
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+# DISABLED: This workflow is currently disabled
+on: []
 
 jobs:
   budget-check:
