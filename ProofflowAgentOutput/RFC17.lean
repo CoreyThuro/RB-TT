@@ -22,3 +22,6 @@ set_option pp.letVarTypes true
 set_option pp.piBinderTypes true
 
 set_option grind.warning false
+
+theorem sum_odd_eq_sq (n : ℕ) : ∑ i ∈ Finset.range n, (2 * i + 1) = n ^ 2 := by
+  induction n <;> norm_num [ Finset.sum_range_succ ] at * ; linarith
