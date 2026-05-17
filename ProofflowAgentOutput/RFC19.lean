@@ -23,5 +23,13 @@ set_option pp.piBinderTypes true
 
 set_option grind.warning false
 
-
 /-! Proof strategy credited to @CoreyThuro, RFC #19 -/
+
+/-- The product of consecutive naturals is even. -/
+theorem two_dvd_mul_succ (n : ℕ) : 2 ∣ n * (n + 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have : (n + 1) * (n + 1 + 1) = n * (n + 1) + 2 * (n + 1) := by ring
+    rw [this]
+    exact dvd_add ih (dvd_mul_right 2 _)
