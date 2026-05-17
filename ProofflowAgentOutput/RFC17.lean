@@ -24,4 +24,4 @@ set_option pp.piBinderTypes true
 set_option grind.warning false
 
 theorem sum_odd_eq_sq (n : ℕ) : ∑ i ∈ Finset.range n, (2 * i + 1) = n ^ 2 := by
-  induction n <;> norm_num [ Finset.sum_range_succ ] at * ; linarith
+  exact Nat.recOn n ( by norm_num ) fun n ih => by rw [ Finset.sum_range_succ ] ; linarith;
